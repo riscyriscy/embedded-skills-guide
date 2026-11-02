@@ -1,0 +1,7 @@
+# Options on top of BusyBox "make defconfig".
+CONFIG_STATIC=y
+# tc does not compile against current kernel headers and an embedded image has no use for it
+# CONFIG_TC is not set
+CONFIG_FEATURE_USE_INITTAB=y
+CONFIG_START_STOP_DAEMON=y
+CONFIG_FEATURE_START_STOP_DAEMON_LONG_OPTIONS=y

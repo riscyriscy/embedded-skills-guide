@@ -1,0 +1,7 @@
+#!/bin/sh
+# Start every script S?? in the order of its name. The two digits are the order: S05 runs before S50.
+for script in /etc/init.d/S??*; do
+    [ -x "$script" ] || continue
+    echo "rcS: $script start"
+    "$script" start
+done

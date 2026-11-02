@@ -1,0 +1,13 @@
+#!/bin/sh
+case "$1" in
+start)
+    mount -t proc proc /proc
+    mount -t sysfs sysfs /sys
+    mount -t tmpfs tmpfs /run
+    mount -t tmpfs tmpfs /var/log
+    mount -t tmpfs tmpfs /tmp
+    ;;
+stop)
+    umount /tmp /var/log /run /sys /proc
+    ;;
+esac

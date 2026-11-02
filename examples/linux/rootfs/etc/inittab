@@ -1,0 +1,8 @@
+# /etc/inittab of BusyBox init: id:runlevels:action:process. BusyBox ignores the id and the runlevels.
+# sysinit runs once at the start and init waits for it to finish.
+::sysinit:/etc/init.d/rcS
+# respawn starts the program again every time that it exits. The dash gives the shell a console of its own.
+::respawn:-/bin/sh
+# shutdown runs when init receives SIGTERM (reboot) or SIGUSR2 (poweroff).
+::shutdown:/etc/init.d/rcK
+::ctrlaltdel:/sbin/reboot

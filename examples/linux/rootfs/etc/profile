@@ -1,0 +1,2 @@
+export PS1="sensorfw# "
+export PATH=/usr/sbin:/usr/bin:/sbin:/bin

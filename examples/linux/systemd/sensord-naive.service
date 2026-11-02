@@ -1,0 +1,8 @@
+[Unit]
+Description=Sensor sampling service, first version
+
+[Service]
+ExecStart=/usr/sbin/sensord /etc/sensord.period
+
+[Install]
+WantedBy=multi-user.target

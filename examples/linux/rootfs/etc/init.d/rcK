@@ -1,0 +1,7 @@
+#!/bin/sh
+# Stop the services in the reverse order.
+for script in $(ls -r /etc/init.d/S??* 2>/dev/null); do
+    [ -x "$script" ] || continue
+    echo "rcK: $script stop"
+    "$script" stop
+done
