@@ -1,0 +1,68 @@
+{
+  "version": 6,
+  "configurePresets": [
+    {
+      "name": "base",
+      "hidden": true,
+      "generator": "Ninja",
+      "binaryDir": "${sourceDir}/../../build/testing-${presetName}",
+      "cacheVariables": { "CMAKE_BUILD_TYPE": "Debug", "CMAKE_EXPORT_COMPILE_COMMANDS": "ON" }
+    },
+    { "name": "host", "inherits": "base", "displayName": "Host tests" },
+    {
+      "name": "host-asan",
+      "inherits": "base",
+      "displayName": "Host tests with AddressSanitizer and UBSan",
+      "cacheVariables": { "SANITIZE": "address,undefined" }
+    },
+    {
+      "name": "host-coverage",
+      "inherits": "base",
+      "displayName": "Host tests with gcov instrumentation",
+      "cacheVariables": { "COVERAGE": "ON", "PATH_MAP": "OFF" }
+    },
+    {
+      "name": "host-llvm-coverage",
+      "inherits": "base",
+      "displayName": "Host tests with clang source-based coverage and MC/DC",
+      "cacheVariables": {
+        "CMAKE_C_COMPILER": "clang",
+        "PATH_MAP": "OFF",
+        "CMAKE_C_FLAGS": "-fprofile-instr-generate -fcoverage-mapping -fcoverage-mcdc",
+        "CMAKE_EXE_LINKER_FLAGS": "-fprofile-instr-generate"
+      }
+    },
+    {
+      "name": "host-fuzz",
+      "inherits": "base",
+      "displayName": "libFuzzer target built with clang",
+      "cacheVariables": {
+        "CMAKE_C_COMPILER": "clang",
+        "SANITIZE": "address,undefined",
+        "FUZZ": "ON"
+      }
+    },
+    {
+      "name": "m4",
+      "inherits": "base",
+      "displayName": "Cortex-M4 tests under QEMU",
+      "toolchainFile": "${sourceDir}/../../cmake/arm-none-eabi.cmake",
+      "cacheVariables": { "CMAKE_BUILD_TYPE": "Release" }
+    }
+  ],
+  "buildPresets": [
+    { "name": "host", "configurePreset": "host" },
+    { "name": "host-asan", "configurePreset": "host-asan" },
+    { "name": "host-coverage", "configurePreset": "host-coverage" },
+    { "name": "host-llvm-coverage", "configurePreset": "host-llvm-coverage" },
+    { "name": "host-fuzz", "configurePreset": "host-fuzz" },
+    { "name": "m4", "configurePreset": "m4" }
+  ],
+  "testPresets": [
+    { "name": "host", "configurePreset": "host", "output": { "outputOnFailure": true } },
+    { "name": "host-asan", "configurePreset": "host-asan", "output": { "outputOnFailure": true } },
+    { "name": "host-coverage", "configurePreset": "host-coverage", "output": { "outputOnFailure": true } },
+    { "name": "host-llvm-coverage", "configurePreset": "host-llvm-coverage", "output": { "outputOnFailure": true } },
+    { "name": "m4", "configurePreset": "m4", "output": { "outputOnFailure": true } }
+  ]
+}
