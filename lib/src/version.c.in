@@ -1,0 +1,6 @@
+#include "sensor/version.h"
+
+const char *sensor_version(void)
+{
+    return "@PROJECT_VERSION@ (@GIT_DESCRIBE@)";
+}
