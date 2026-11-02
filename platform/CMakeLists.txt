@@ -9,6 +9,9 @@ if(CMAKE_CROSSCOMPILING)
     # object, so inside a static archive the linker would never pull it in.
     add_library(startup OBJECT arm-m4/startup.c)
     target_link_libraries(startup PRIVATE project_warnings)
+    # Without this option the compiler turns the copy and clear loops of Reset_Handler into calls to
+    # memcpy and memset, which pulls 470 bytes of library code into the image.
+    target_compile_options(startup PRIVATE -fno-tree-loop-distribute-patterns)
 
     add_library(firmware_link INTERFACE)
     target_link_options(firmware_link INTERFACE -T${CMAKE_CURRENT_SOURCE_DIR}/arm-m4/link.ld)
