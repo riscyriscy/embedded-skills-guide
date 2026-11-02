@@ -3,6 +3,7 @@
 # Usage: examples/run.sh <host|m4> [compiler options] <sources>
 # Sources ending in .cpp are compiled with the C++ compiler. Set OUT=<file> to keep the image, and
 # STARTUP=<file> and LD_SCRIPT=<file> to replace the start-up code and the linker script of the target.
+# PLAT_OPTS="<options>" adds compiler options to the start-up and platform files, for example -g.
 set -eu
 
 target=${1:?usage: run.sh <host|m4> [compiler options] <sources>}
@@ -32,7 +33,8 @@ fi
 
 objects=() driver=$cc
 for src in "${plat[@]}"; do
-    "$cc" "${cpu[@]}" -O1 -fno-tree-loop-distribute-patterns -I"$root/platform/include" -c "$src" -o "$work/$(basename "$src").o"
+    # shellcheck disable=SC2086
+    "$cc" "${cpu[@]}" -O1 -fno-tree-loop-distribute-patterns ${PLAT_OPTS:-} -I"$root/platform/include" -c "$src" -o "$work/$(basename "$src").o"
     objects+=("$work/$(basename "$src").o")
 done
 for src in "${sources[@]}"; do

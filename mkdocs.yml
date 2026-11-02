@@ -1,0 +1,23 @@
+site_name: sensorfw
+site_description: Firmware for the sensor board
+docs_dir: docs
+site_dir: build/docs/site
+strict: true
+validation:
+  nav:
+    omitted_files: warn
+    not_found: warn
+  links:
+    not_found: warn
+    anchors: warn
+nav:
+  - Home: index.md
+  - Architecture: architecture.md
+  - Building: building.md
+  - Releasing: releasing.md
+  - Decisions:
+      - decisions/index.md
+      - "0001 The ring buffer overwrites": decisions/0001-ring-buffer-overwrites.md
+exclude_docs: |
+  Doxyfile
+  *.dot

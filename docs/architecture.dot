@@ -1,0 +1,15 @@
+digraph sensorfw {
+    rankdir=LR;
+    node [shape=box, fontname="Helvetica", fontsize=11];
+    app      [label="app/main.c"];
+    sensor   [label="lib: sensor\nringbuf, stats, version"];
+    filters  [label="lib: filters"];
+    platform [label="platform\nstartup, plat_puts, plat_exit"];
+    host     [label="host\nplatform_host.c"];
+    m4       [label="arm-m4\nstartup.c, link.ld"];
+    app -> sensor;
+    app -> platform;
+    filters -> sensor;
+    platform -> host [label="gcc"];
+    platform -> m4 [label="arm-none-eabi-gcc"];
+}

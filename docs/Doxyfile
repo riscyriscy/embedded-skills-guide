@@ -1,0 +1,22 @@
+# Doxygen settings for the API reference of the sensor library.
+# PROJECT_NUMBER comes from the environment (tools/docs.sh sets it to the output of git describe).
+PROJECT_NAME           = "sensorfw"
+PROJECT_BRIEF          = "Sensor library: ring buffer, statistics and version stamp"
+PROJECT_NUMBER         = $(PROJECT_NUMBER)
+INPUT                  = lib/include
+FILE_PATTERNS          = *.h
+RECURSIVE              = YES
+OUTPUT_DIRECTORY       = docs/api
+HTML_OUTPUT            = .
+GENERATE_HTML          = YES
+GENERATE_LATEX         = NO
+HAVE_DOT               = NO
+SEARCHENGINE           = NO
+QUIET                  = YES
+# A public function without a comment, or a comment that misses a parameter, is a warning.
+# The warnings stop the build, so the reference cannot fall behind the headers.
+WARN_IF_UNDOCUMENTED   = YES
+WARN_IF_DOC_ERROR      = YES
+WARN_NO_PARAMDOC       = YES
+WARN_AS_ERROR          = FAIL_ON_WARNINGS
+EXTRACT_ALL            = NO

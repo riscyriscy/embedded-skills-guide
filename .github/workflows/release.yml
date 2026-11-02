@@ -1,0 +1,50 @@
+# The release pipeline for GitHub Actions. A tag of the form vMAJOR.MINOR.PATCH starts it. The job calls
+# tools/release.sh, checks the result with tools/verify_release.sh and attaches the files to a release.
+name: release
+
+on:
+  push:
+    tags: ["v[0-9]+.[0-9]+.[0-9]+"]
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    container: ghcr.io/example/sensorfw-ci:1
+    steps:
+      # The tags are needed: the script stops when the commit has no tag.
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+      # The image of the CI jobs has no openssl command.
+      - run: apt-get update && apt-get install -y --no-install-recommends openssl
+      - name: Make the release
+        env:
+          RELEASE_KEY: ${{ secrets.RELEASE_SIGN_KEY }}
+          RELEASE_PUB: ${{ vars.RELEASE_PUBLIC_KEY }}
+        run: |
+          umask 077
+          printf '%s\n' "$RELEASE_KEY" > "$RUNNER_TEMP/release-key.pem"
+          printf '%s\n' "$RELEASE_PUB" > "$RUNNER_TEMP/release-key.pub.pem"
+          SIGN_KEY="$RUNNER_TEMP/release-key.pem" tools/release.sh make
+          tools/verify_release.sh "build/release/$GITHUB_REF_NAME" "$RUNNER_TEMP/release-key.pub.pem"
+          rm -f "$RUNNER_TEMP/release-key.pem"
+      # The files for the customer go to the release. The files with the symbols stay with us (a store that keeps
+      # them as long as a device with this version can exist; the 90 days of an artifact are the most GitHub allows).
+      - uses: softprops/action-gh-release@v2
+        with:
+          body_path: build/release/${{ github.ref_name }}/RELEASE-NOTES.md
+          files: |
+            build/release/${{ github.ref_name }}/*.bin
+            build/release/${{ github.ref_name }}/SHA256SUMS*
+            build/release/${{ github.ref_name }}/manifest.json
+      - uses: actions/upload-artifact@v7
+        with:
+          name: symbols-${{ github.ref_name }}
+          path: |
+            build/release/${{ github.ref_name }}/*.debug.elf
+            build/release/${{ github.ref_name }}/*.map
+          retention-days: 90

@@ -2,7 +2,7 @@
 # The steps of the pipeline. GitHub Actions, GitLab CI and Jenkins call this script and nothing else,
 # so a developer runs the same commands on a laptop. One line per stage, the log of each stage goes to
 # build/logs and the reports (JUnit files, coverage, sizes, version) go to build/reports.
-# Usage: tools/ci.sh stage [stage ...]      stages: env host asan coverage m4 static board meta publish all
+# Usage: tools/ci.sh stage [stage ...]      stages: env host asan coverage m4 static docs board meta publish all
 # With VERBOSE=1 the output of each stage also goes to the console, where a pipeline keeps it.
 # Exit status 1 when any stage fails. Every stage runs, so one run shows every failure.
 # The stages are called through "stage_$name", which ShellCheck cannot follow.
@@ -59,6 +59,10 @@ stage_m4() {
 
 stage_static() { tools/static_check.sh; }
 
+# The documentation: the API reference from the headers, the diagrams and the site. A Doxygen warning or a broken link fails.
+# This stage is not part of "all": a runner needs Doxygen, Graphviz and MkDocs for it.
+stage_docs() { tools/docs.sh; }
+
 # The tests on a board that is connected to the machine of the pipeline. BOARD_TTY names its serial port.
 # This stage is not part of "all": a runner without the board cannot run it.
 stage_board() {
@@ -107,7 +111,7 @@ run_stage() {
 }
 
 stages=("$@")
-[ ${#stages[@]} -gt 0 ] || { echo "usage: tools/ci.sh stage [stage ...]   (env host asan coverage m4 static board meta publish all)" >&2; exit 2; }
+[ ${#stages[@]} -gt 0 ] || { echo "usage: tools/ci.sh stage [stage ...]   (env host asan coverage m4 static docs board meta publish all)" >&2; exit 2; }
 [ "${stages[0]}" = all ] && stages=(env static host asan coverage m4 meta)
 
 failed=0
