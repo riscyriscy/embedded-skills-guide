@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% block title %}Run #{{ run['id'] }} - sensorfw pipeline{% endblock %}
+{% block body %}
+<p><a href="{{ url_for('index') }}">All runs</a></p>
+<h1>Run #{{ run['id'] }} <span class="badge {{ 'fail' if run['failed'] or run['stages_failed'] else 'pass' }}">{{ 'fail' if run['failed'] or run['stages_failed'] else 'pass' }}</span></h1>
+<div><code>{{ run['version'] }}</code> &middot; {{ run['subject'] }}</div>
+<div class="muted">commit <code>{{ run['commit_id'][:12] }}</code> &middot; {{ run['time'] }}</div>
+<h2>Stages</h2>
+<table>
+  <tr><th>Stage</th><th>Result</th><th class="num">Seconds</th></tr>
+{% for st in stages %}
+  <tr><td><code>{{ st.name }}</code></td><td><span class="badge {{ 'pass' if st.status == 'passed' else 'fail' }}">{{ st.status }}</span></td><td class="num">{{ st.seconds }}</td></tr>
+{% else %}
+  <tr><td colspan="3" class="muted">This run has no stage results.</td></tr>
+{% endfor %}
+</table>
+<h2>Results</h2>
+<table>
+  <tr><th>Suite</th><th>Test</th><th>Result</th><th>Message</th></tr>
+{% for c in cases %}
+  <tr><td>{{ c.suite }}</td><td><code>{{ c.name }}</code></td><td><span class="badge {{ c.status }}">{{ c.status }}</span></td><td>{{ c.message }}</td></tr>
+{% else %}
+  <tr><td colspan="4" class="muted">This run has no test results.</td></tr>
+{% endfor %}
+</table>
+{% endblock %}

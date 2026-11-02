@@ -4,3 +4,9 @@ compile_commands.json
 *.orig
 *.ctu-info
 *.dump
+.venv/
+__pycache__/
+*.db
+.pytest_cache/
+.ruff_cache/
+.gitlab-ci-local/

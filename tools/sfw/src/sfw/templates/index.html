@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% block body %}
+<h1>sensorfw pipeline</h1>
+<div class="muted">{{ runs|length }} newest runs</div>
+<div class="trends">
+{% for t in trends %}
+  <div class="trend">
+    <div class="muted">{{ t.title }}</div>
+    {% if t.last is none %}<div class="value">-</div>{% else %}<div class="value">{{ "%.1f"|format(t.last) if t.unit == "%" else "{:,}".format(t.last|int) }}{{ t.unit }}</div>{% endif %}
+    <svg viewBox="0 0 160 36" preserveAspectRatio="none" role="img" aria-label="{{ t.title }} over the newest runs"><polyline points="{{ t.points }}"/></svg>
+  </div>
+{% endfor %}
+</div>
+<h2>Runs</h2>
+<table>
+  <tr><th>Run</th><th>Result</th><th>Version</th><th>Change</th><th class="num">Tests</th><th class="num">Lines</th><th class="num">Flash</th></tr>
+{% for r in runs %}
+  <tr>
+    <td><a href="{{ url_for('show_run', run_id=r['id']) }}">#{{ r['id'] }}</a></td>
+    <td><span class="badge {{ 'fail' if r['failed'] or r['stages_failed'] else 'pass' }}">{{ 'fail' if r['failed'] or r['stages_failed'] else 'pass' }}</span></td>
+    <td><code>{{ r['version'] }}</code></td>
+    <td>{{ r['subject'] }}</td>
+    <td class="num">{{ r['passed'] }}/{{ r['total'] }}</td>
+    <td class="num">{% if r['line_percent'] is none %}-{% else %}{{ "%.1f"|format(r['line_percent']) }}%{% endif %}</td>
+    <td class="num">{% if r['flash'] is none %}-{% else %}{{ r['flash'] }}{% endif %}</td>
+  </tr>
+{% else %}
+  <tr><td colspan="7" class="muted">No runs yet. Publish one with <code>sfw publish</code>.</td></tr>
+{% endfor %}
+</table>
+{% endblock %}

@@ -1,0 +1,27 @@
+[project]
+name = "sfw"
+version = "0.1.0"
+description = "Reads the reports of the sensorfw pipeline, stores them and shows them on a dashboard"
+readme = "README.md"
+requires-python = ">=3.12"
+# The command line tool needs nothing outside the standard library. Flask is for the dashboard only.
+dependencies = []
+
+[project.optional-dependencies]
+dashboard = ["flask>=3.1,<4"]
+
+[project.scripts]
+sfw = "sfw.cli:main"
+
+[dependency-groups]
+dev = ["pytest>=8", "ruff>=0.8", "flask>=3.1,<4"]
+
+[build-system]
+requires = ["uv_build>=0.11.32,<0.12.0"]
+build-backend = "uv_build"
+
+[tool.ruff]
+line-length = 120
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "B", "UP"]

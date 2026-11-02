@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{% block title %}sensorfw pipeline{% endblock %}</title>
+<style>
+  :root { --bg:#fff; --fg:#1a1a1a; --muted:#5b6472; --line:#d9dde3; --ok:#1a7f37; --bad:#c62828; --accent:#001c71; }
+  @media (prefers-color-scheme: dark) { :root { --bg:#14171c; --fg:#e8eaee; --muted:#9aa3b2; --line:#2b3039; --ok:#4cc26d; --bad:#ff6b6b; --accent:#8fb4ff; } }
+  body { font: 15px/1.45 system-ui, sans-serif; background: var(--bg); color: var(--fg); margin: 0 auto; padding: 24px 16px; max-width: 980px; }
+  h1 { font-size: 22px; margin: 0 0 4px; color: var(--accent); }
+  h2 { font-size: 16px; margin: 28px 0 8px; }
+  a { color: var(--accent); }
+  .muted { color: var(--muted); }
+  table { border-collapse: collapse; width: 100%; }
+  th, td { text-align: left; padding: 6px 10px; border-bottom: 1px solid var(--line); vertical-align: top; }
+  th { font-size: 12px; text-transform: uppercase; letter-spacing: .04em; color: var(--muted); }
+  td.num, th.num { text-align: right; font-variant-numeric: tabular-nums; }
+  .badge { display: inline-block; min-width: 3.2em; text-align: center; padding: 1px 8px; border-radius: 10px; font-size: 12px; font-weight: 600; color: #fff; }
+  .badge.pass { background: var(--ok); } .badge.fail { background: var(--bad); } .badge.skip { background: var(--muted); }
+  .trends { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 12px; margin-top: 16px; }
+  .trend { border: 1px solid var(--line); border-radius: 8px; padding: 10px 12px; }
+  .trend .value { font-size: 20px; font-weight: 600; }
+  .trend svg { display: block; width: 100%; height: 36px; margin-top: 6px; }
+  .trend polyline { fill: none; stroke: var(--accent); stroke-width: 2; stroke-linejoin: round; }
+  code { font: 13px ui-monospace, Consolas, monospace; }
+</style>
+</head>
+<body>
+{% block body %}{% endblock %}
+</body>
+</html>

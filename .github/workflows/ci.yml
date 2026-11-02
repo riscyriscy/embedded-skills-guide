@@ -1,0 +1,80 @@
+# The pipeline for GitHub Actions. Every job calls tools/ci.sh, so a developer runs the same commands.
+name: ci
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+# A new push to the same branch cancels the run that is still going.
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+env:
+  VERBOSE: "1"
+
+jobs:
+  check:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    container: ghcr.io/example/sensorfw-ci:1
+    strategy:
+      fail-fast: false
+      matrix:
+        stage: [static, host, asan, coverage, m4]
+    steps:
+      # fetch-depth 0 brings the history and the tags, so git describe in the version stamp has a tag to count from.
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+      - run: tools/ci.sh ${{ matrix.stage }} meta
+      - uses: actions/upload-artifact@v7
+        if: ${{ !cancelled() }}
+        with:
+          name: reports-${{ matrix.stage }}
+          path: build/reports
+          retention-days: 14
+
+  # The tests on the board run on a machine of ours that has the board attached, and only on the main branch.
+  board:
+    if: github.ref == 'refs/heads/main'
+    needs: check
+    runs-on: [self-hosted, board-m4]
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+      - run: tools/ci.sh board meta
+        env:
+          BOARD_TTY: /dev/ttyACM0
+      - uses: actions/upload-artifact@v7
+        if: ${{ !cancelled() }}
+        with:
+          name: reports-board
+          path: build/reports
+
+  # The reports of all jobs go to the dashboard, and only from the main branch. The token is a secret of the repository.
+  publish:
+    if: github.ref == 'refs/heads/main' && !cancelled()
+    needs: check
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    container: ghcr.io/example/sensorfw-ci:1
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+      - uses: actions/download-artifact@v8
+        with:
+          pattern: reports-*
+          merge-multiple: true
+          path: build/reports
+      - run: tools/ci.sh publish
+        env:
+          DASHBOARD_URL: ${{ vars.DASHBOARD_URL }}
+          SFW_TOKEN: ${{ secrets.SFW_TOKEN }}

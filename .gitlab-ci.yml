@@ -1,0 +1,70 @@
+# The pipeline for GitLab CI. Every job calls tools/ci.sh, so a developer runs the same commands.
+variables:
+  BUILD_IMAGE: registry.example.com/team/sensorfw-ci:1
+  GIT_DEPTH: "0"          # the history and the tags, so git describe has a tag to count from
+  VERBOSE: "1"
+
+default:
+  image: $BUILD_IMAGE
+  interruptible: true     # a new push cancels the pipeline that is still going
+  timeout: 20 minutes
+
+stages: [check, test, target, report]
+
+static:
+  stage: check
+  script: [tools/ci.sh static meta]
+
+test:
+  stage: test
+  # One job for each value. The three jobs run at the same time and have their own results.
+  parallel:
+    matrix:
+      - STAGE: [host, asan, m4]
+  script: [tools/ci.sh $STAGE meta]
+  artifacts:
+    when: always
+    expire_in: 14 days
+    paths: [build/reports]
+    reports:
+      junit: build/reports/junit-*.xml
+
+# GitLab reads the percentage from the log with the regular expression, and the report for the diff view from the file.
+coverage:
+  stage: test
+  script: [tools/ci.sh coverage meta]
+  coverage: '/^TOTAL.*\s+(\d+)%$/'
+  artifacts:
+    when: always
+    expire_in: 14 days
+    paths: [build/reports]
+    reports:
+      junit: build/reports/junit-*.xml
+      coverage_report:
+        coverage_format: cobertura
+        path: build/reports/coverage.xml
+
+# The tests on the board run on a runner of ours that has the board attached, and only on the main branch.
+board:
+  stage: target
+  tags: [board-m4]
+  rules:
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+  variables:
+    BOARD_TTY: /dev/ttyACM0
+  script: [tools/ci.sh board meta]
+  artifacts:
+    when: always
+    paths: [build/reports]
+    reports:
+      junit: build/reports/junit-board.xml
+
+# The reports of the earlier jobs go to the dashboard. GitLab hands them over because of "needs" with artifacts.
+# DASHBOARD_URL and SFW_TOKEN are masked variables in the settings of the project.
+publish:
+  stage: report
+  needs: [static, test, coverage]
+  rules:
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+      when: always
+  script: [tools/ci.sh publish]
