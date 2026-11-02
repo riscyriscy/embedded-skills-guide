@@ -1,0 +1,7 @@
+mainmenu "Priority inversion"
+
+config APP_USE_MUTEX
+	bool "Protect the resource with a mutex instead of a semaphore"
+	default y
+
+source "Kconfig.zephyr"

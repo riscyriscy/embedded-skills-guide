@@ -1,0 +1,1 @@
+FreeRTOS-Kernel V11.3.3 (MIT), taken from https://github.com/FreeRTOS/FreeRTOS-Kernel at the tag V11.3.3, commit 89592801dd8b73329a7583719b7e3567b50910e5. Only the files that the examples build are kept.

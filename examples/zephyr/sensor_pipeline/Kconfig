@@ -1,0 +1,9 @@
+mainmenu "Sensor pipeline"
+
+config APP_SAMPLES
+	int "Samples that the simulated device produces"
+	default 8
+	help
+	  The number of interrupts that the sensor thread pends before it stops.
+
+source "Kconfig.zephyr"

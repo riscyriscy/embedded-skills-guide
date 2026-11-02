@@ -1,0 +1,18 @@
+{
+  "version": 6,
+  "cmakeMinimumRequired": { "major": 3, "minor": 25, "patch": 0 },
+  "configurePresets": [
+    {
+      "name": "m4",
+      "displayName": "Cortex-M4 in QEMU",
+      "generator": "Ninja",
+      "binaryDir": "${sourceDir}/../../build/rtos-m4",
+      "toolchainFile": "${sourceDir}/../../cmake/arm-none-eabi.cmake",
+      "cacheVariables": { "CMAKE_BUILD_TYPE": "Release" }
+    }
+  ],
+  "buildPresets": [ { "name": "m4", "configurePreset": "m4" } ],
+  "testPresets": [
+    { "name": "m4", "configurePreset": "m4", "output": { "outputOnFailure": true } }
+  ]
+}

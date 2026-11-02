@@ -1,0 +1,8 @@
+/* Application settings in the device tree: the period of the simulated device and the work that the
+   consumer does for each sample. Read in main.c with DT_PROP. */
+/ {
+	zephyr,user {
+		sample-period-ms = <5>;
+		consumer-work-us = <12000>;
+	};
+};

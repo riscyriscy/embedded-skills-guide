@@ -1,0 +1,38 @@
+cmake_minimum_required(VERSION 3.25)
+project(concurrency_examples VERSION 0.1.0 LANGUAGES C)
+
+# The POSIX thread examples of Chapter 16. They build the ring buffer of the running project from its
+# source file and run on the build machine.
+get_filename_component(REPO "${CMAKE_CURRENT_SOURCE_DIR}/../.." ABSOLUTE)
+set(SANITIZE "" CACHE STRING "Sanitizers, for example thread")
+if(SANITIZE)
+    add_compile_options(-fsanitize=${SANITIZE} -g -fno-omit-frame-pointer)
+    add_link_options(-fsanitize=${SANITIZE})
+endif()
+add_compile_options(-Wall -Wextra -Wshadow -Wconversion -O1 -g)
+find_package(Threads REQUIRED)
+enable_testing()
+
+add_library(sensor STATIC "${REPO}/lib/src/ringbuf.c" "${REPO}/lib/src/stats.c")
+target_include_directories(sensor PUBLIC "${REPO}/lib/include")
+target_compile_definitions(sensor PUBLIC RINGBUF_CAPACITY=16u)
+
+function(add_thread_demo name)
+    add_executable(${name} ${ARGN})
+    target_link_libraries(${name} PRIVATE sensor Threads::Threads)
+    add_test(NAME ${name} COMMAND ${name})
+endfunction()
+
+add_thread_demo(sum src/sum.c)
+add_thread_demo(counter_plain src/counter.c)
+add_thread_demo(counter_mutex src/counter.c)
+target_compile_definitions(counter_mutex PRIVATE USE_MUTEX)
+add_thread_demo(counter_atomic src/counter.c)
+target_compile_definitions(counter_atomic PRIVATE USE_ATOMIC)
+add_thread_demo(window_plain src/window.c)
+add_thread_demo(window_rwlock src/window.c)
+target_compile_definitions(window_rwlock PRIVATE USE_LOCK)
+add_thread_demo(bqueue_demo src/bqueue.c src/bqueue_demo.c)
+add_thread_demo(deadlock src/deadlock.c)
+add_thread_demo(sched src/sched.c)
+add_thread_demo(stack src/stack.c)
