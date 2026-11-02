@@ -1,0 +1,2 @@
+# The linker script symbols _sdata, _edata, _sbss and _ebss are addresses, not objects.
+comparePointers:platform/arm-m4/startup.c

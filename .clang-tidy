@@ -1,0 +1,15 @@
+# Checks for the sensorfw sources. WarningsAsErrors makes every finding fail the check.
+Checks: >
+  -*,
+  bugprone-*,
+  -bugprone-easily-swappable-parameters,
+  cert-*,
+  clang-analyzer-*,
+  misc-*,
+  -misc-include-cleaner,
+  performance-*,
+  portability-*,
+  readability-braces-around-statements,
+  readability-non-const-parameter
+WarningsAsErrors: '*'
+HeaderFilterRegex: '(lib|app|platform|test)/'

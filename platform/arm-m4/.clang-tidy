@@ -1,0 +1,7 @@
+# The linker script defines symbols such as _sdata and _estack. Their names start with an underscore
+# and a lower case letter, which C reserves, so the check for reserved identifiers does not apply here.
+InheritParentConfig: true
+Checks: >
+  -bugprone-reserved-identifier,
+  -cert-dcl37-c,
+  -cert-dcl51-cpp
