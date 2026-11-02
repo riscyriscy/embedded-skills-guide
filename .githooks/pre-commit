@@ -1,0 +1,17 @@
+#!/bin/bash
+# Refuses a commit whose staged C files do not follow .clang-format.
+# Enable it once per clone:  git config core.hooksPath .githooks
+set -u
+files=$(git diff --cached --name-only --diff-filter=ACM -- '*.c' '*.h')
+[ -z "$files" ] && exit 0
+
+bad=0
+for f in $files; do
+    # Check the staged content, not the working copy.
+    if ! git show ":$f" | clang-format --assume-filename="$f" --dry-run --Werror > /dev/null 2>&1; then
+        echo "pre-commit: $f does not follow .clang-format" >&2
+        bad=1
+    fi
+done
+[ $bad -eq 0 ] || echo "pre-commit: run  clang-format -i <file>  and stage the file again" >&2
+exit $bad

@@ -25,10 +25,21 @@ void Reset_Handler(void)
 typedef void (*vector_t)(void);
 
 /* The first word is the initial stack pointer, the second the reset vector. */
-__attribute__((section(".isr_vector"), used))
-const vector_t vector_table[16] = {
-    (vector_t)&_estack, Reset_Handler,  Default_Handler, Default_Handler,
-    Default_Handler,    Default_Handler, Default_Handler, 0,
-    0,                  0,               0,               Default_Handler,
-    Default_Handler,    0,               Default_Handler, Default_Handler,
+__attribute__((section(".isr_vector"), used)) const vector_t vector_table[16] = {
+    (vector_t)&_estack,
+    Reset_Handler,
+    Default_Handler,
+    Default_Handler,
+    Default_Handler,
+    Default_Handler,
+    Default_Handler,
+    0,
+    0,
+    0,
+    0,
+    Default_Handler,
+    Default_Handler,
+    0,
+    Default_Handler,
+    Default_Handler,
 };

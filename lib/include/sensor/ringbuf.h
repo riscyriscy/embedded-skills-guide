@@ -12,13 +12,13 @@
 
 typedef struct {
     int16_t data[RINGBUF_CAPACITY];
-    size_t head;   /* index of the next write */
-    size_t count;  /* samples stored, at most RINGBUF_CAPACITY */
+    size_t head;  /* index of the next write */
+    size_t count; /* samples stored, at most RINGBUF_CAPACITY */
 } ringbuf_t;
 
 void ringbuf_init(ringbuf_t *rb);
-bool ringbuf_push(ringbuf_t *rb, int16_t sample);  /* true when the oldest sample was overwritten */
+bool ringbuf_push(ringbuf_t *rb, int16_t sample); /* true when the oldest sample was overwritten */
 size_t ringbuf_count(const ringbuf_t *rb);
-bool ringbuf_get(const ringbuf_t *rb, size_t index, int16_t *out);  /* index 0 is the oldest */
+bool ringbuf_get(const ringbuf_t *rb, size_t index, int16_t *out); /* index 0 is the oldest */
 
 #endif

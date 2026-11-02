@@ -2,8 +2,8 @@
 
 #include <stdint.h>
 
-#define SYS_WRITE0        0x04
-#define SYS_EXIT_EXTENDED 0x20
+#define SYS_WRITE0                   0x04
+#define SYS_EXIT_EXTENDED            0x20
 #define ADP_STOPPED_APPLICATION_EXIT 0x20026u
 
 static int semihost(int op, const void *arg)

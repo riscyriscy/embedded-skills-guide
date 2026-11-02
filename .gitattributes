@@ -1,0 +1,11 @@
+# Keep line endings the same on every machine. Text files are stored with LF in the repository.
+* text=auto eol=lf
+
+# Files that a Windows tool must read with CRLF.
+*.ps1 text eol=crlf
+*.bat text eol=crlf
+
+# Binary files: no conversion, no diff of the content.
+*.bin binary
+*.elf binary
+*.png binary

@@ -1,0 +1,9 @@
+# Style of the sensorfw sources. Checked by .githooks/pre-commit.
+BasedOnStyle: LLVM
+IndentWidth: 4
+ColumnLimit: 100
+BreakBeforeBraces: Linux
+AllowShortFunctionsOnASingleLine: None
+AllowShortIfStatementsOnASingleLine: Never
+AlignConsecutiveMacros: Consecutive
+SortIncludes: CaseSensitive

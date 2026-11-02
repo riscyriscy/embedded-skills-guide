@@ -1,0 +1,22 @@
+{
+    "editor.formatOnSave": true,
+    "editor.rulers": [100],
+    "files.eol": "\n",
+    "files.insertFinalNewline": true,
+    "files.trimTrailingWhitespace": true,
+    "[c]": {
+        "editor.defaultFormatter": "llvm-vs-code-extensions.vscode-clangd"
+    },
+    "C_Cpp.intelliSenseEngine": "disabled",
+    "clangd.arguments": [
+        "--compile-commands-dir=${workspaceFolder}/build/host",
+        "--query-driver=/usr/bin/arm-none-eabi-*",
+        "--background-index",
+        "--clang-tidy=false"
+    ],
+    "cmake.useCMakePresets": "always",
+    "cmake.configureOnOpen": false,
+    "files.exclude": {
+        "build": true
+    }
+}

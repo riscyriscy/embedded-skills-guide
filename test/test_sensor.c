@@ -7,14 +7,14 @@
 
 static int failures;
 
-#define CHECK(cond)                                  \
-    do {                                             \
-        if (cond) {                                  \
-            plat_puts("PASS " #cond);                \
-        } else {                                     \
-            plat_puts("FAIL " #cond);                \
-            failures++;                              \
-        }                                            \
+#define CHECK(cond)                                                                                \
+    do {                                                                                           \
+        if (cond) {                                                                                \
+            plat_puts("PASS " #cond);                                                              \
+        } else {                                                                                   \
+            plat_puts("FAIL " #cond);                                                              \
+            failures++;                                                                            \
+        }                                                                                          \
     } while (0)
 
 int main(void)
@@ -33,14 +33,14 @@ int main(void)
     }
     CHECK(no_overwrite);
     CHECK(ringbuf_count(&rb) == RINGBUF_CAPACITY);
-    CHECK(ringbuf_push(&rb, 100));          /* overwrites sample 1 */
+    CHECK(ringbuf_push(&rb, 100)); /* overwrites sample 1 */
     CHECK(ringbuf_get(&rb, 0, &v) && v == 2);
     CHECK(ringbuf_get(&rb, RINGBUF_CAPACITY - 1, &v) && v == 100);
     CHECK(!ringbuf_get(&rb, RINGBUF_CAPACITY, &v));
 
     ringbuf_init(&rb);
     (void)ringbuf_push(&rb, 10);
-    (void)ringbuf_push(&rb, 500);               /* a spike */
+    (void)ringbuf_push(&rb, 500); /* a spike */
     (void)ringbuf_push(&rb, 12);
     CHECK(filter_median3(&rb) == 12);
 

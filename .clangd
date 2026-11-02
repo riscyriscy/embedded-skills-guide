@@ -1,0 +1,6 @@
+# clangd reads the flags of each file from the compilation database that CMake writes.
+# Change the directory to build/m4-release to edit with the flags of the target build.
+CompileFlags:
+  CompilationDatabase: build/host
+  # Options that GCC knows and clang does not.
+  Remove: [-fno-tree-loop-distribute-patterns]
