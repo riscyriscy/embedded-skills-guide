@@ -1,17 +1,17 @@
 set(VERSION_C "${CMAKE_CURRENT_BINARY_DIR}/version.c")
 
-add_custom_command(
-    OUTPUT "${VERSION_C}"
+# A custom target has no output file to compare, so it runs on every build. GenVersion.cmake
+# rewrites version.c only when the text changes, so an unchanged version recompiles nothing.
+add_custom_target(sensor_version_gen
     COMMAND ${CMAKE_COMMAND}
             -DSRC=${CMAKE_CURRENT_SOURCE_DIR}/src/version.c.in
             -DDST=${VERSION_C}
             -DPROJECT_VERSION=${PROJECT_VERSION}
             -DGIT_DIR=${PROJECT_SOURCE_DIR}
             -P ${PROJECT_SOURCE_DIR}/cmake/GenVersion.cmake
-    DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/src/version.c.in
-            ${PROJECT_SOURCE_DIR}/cmake/GenVersion.cmake
-    COMMENT "Generating version.c")
-add_custom_target(sensor_version_gen DEPENDS "${VERSION_C}")
+    BYPRODUCTS "${VERSION_C}"
+    COMMENT "Generating version.c"
+    VERBATIM)
 
 add_library(sensor STATIC src/ringbuf.c src/stats.c "${VERSION_C}")
 add_dependencies(sensor sensor_version_gen)
