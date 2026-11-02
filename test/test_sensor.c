@@ -1,3 +1,5 @@
+#include <stdbool.h>
+
 #include "platform.h"
 #include "sensor/ringbuf.h"
 #include "sensor/stats.h"
@@ -24,9 +26,11 @@ int main(void)
     CHECK(!ringbuf_get(&rb, 0, &v));
     CHECK(stats_mean(&rb) == 0);
 
+    bool no_overwrite = true;
     for (size_t i = 1; i <= RINGBUF_CAPACITY; i++) {
-        CHECK(!ringbuf_push(&rb, (int16_t)i));
+        no_overwrite = no_overwrite && !ringbuf_push(&rb, (int16_t)i);
     }
+    CHECK(no_overwrite);
     CHECK(ringbuf_count(&rb) == RINGBUF_CAPACITY);
     CHECK(ringbuf_push(&rb, 100));          /* overwrites sample 1 */
     CHECK(ringbuf_get(&rb, 0, &v) && v == 2);
