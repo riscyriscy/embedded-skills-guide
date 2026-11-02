@@ -24,8 +24,8 @@ int main(void)
     CHECK(!ringbuf_get(&rb, 0, &v));
     CHECK(stats_mean(&rb) == 0);
 
-    for (int16_t i = 1; i <= RINGBUF_CAPACITY; i++) {
-        CHECK(!ringbuf_push(&rb, i));
+    for (size_t i = 1; i <= RINGBUF_CAPACITY; i++) {
+        CHECK(!ringbuf_push(&rb, (int16_t)i));
     }
     CHECK(ringbuf_count(&rb) == RINGBUF_CAPACITY);
     CHECK(ringbuf_push(&rb, 100));          /* overwrites sample 1 */

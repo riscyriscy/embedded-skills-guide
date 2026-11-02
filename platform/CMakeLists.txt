@@ -11,7 +11,6 @@ if(CMAKE_CROSSCOMPILING)
     target_link_libraries(startup PRIVATE project_warnings)
 
     add_library(firmware_link INTERFACE)
-    target_link_libraries(firmware_link INTERFACE startup)
     target_link_options(firmware_link INTERFACE -T${CMAKE_CURRENT_SOURCE_DIR}/arm-m4/link.ld)
     set_property(TARGET firmware_link APPEND PROPERTY INTERFACE_LINK_DEPENDS
                  ${CMAKE_CURRENT_SOURCE_DIR}/arm-m4/link.ld)

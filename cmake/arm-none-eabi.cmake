@@ -12,8 +12,10 @@ set(CMAKE_FIND_ROOT_PATH_MODE_PACKAGE ONLY)
 
 set(CPU_FLAGS "-mcpu=cortex-m4 -mthumb -mfloat-abi=soft")
 set(CMAKE_C_FLAGS_INIT "${CPU_FLAGS} -ffunction-sections -fdata-sections")
-set(CMAKE_C_FLAGS_DEBUG_INIT "-Og -g3")
-set(CMAKE_C_FLAGS_RELEASE_INIT "-Os -DNDEBUG")
+# Per-configuration flags are set in the cache. CMAKE_C_FLAGS_RELEASE_INIT would be
+# followed by the compiler default "-O3 -DNDEBUG", and the last -O option wins.
+set(CMAKE_C_FLAGS_DEBUG "-Og -g3" CACHE STRING "")
+set(CMAKE_C_FLAGS_RELEASE "-Os -DNDEBUG" CACHE STRING "")
 set(CMAKE_EXE_LINKER_FLAGS_INIT "${CPU_FLAGS} -Wl,--gc-sections --specs=nano.specs -nostartfiles")
 
 # ctest runs each test executable through this command line, with the executable appended.

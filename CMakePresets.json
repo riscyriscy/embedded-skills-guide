@@ -11,34 +11,79 @@
       "name": "host",
       "inherits": "base",
       "displayName": "Host build for unit tests",
-      "cacheVariables": { "CMAKE_BUILD_TYPE": "Debug" }
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Debug"
+      }
     },
     {
       "name": "m4-release",
       "inherits": "base",
       "displayName": "Cortex-M4 release",
       "toolchainFile": "${sourceDir}/cmake/arm-none-eabi.cmake",
-      "cacheVariables": { "CMAKE_BUILD_TYPE": "Release" }
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Release"
+      }
     }
   ],
   "buildPresets": [
-    { "name": "host", "configurePreset": "host" },
-    { "name": "m4-release", "configurePreset": "m4-release" }
+    {
+      "name": "host",
+      "configurePreset": "host"
+    },
+    {
+      "name": "m4-release",
+      "configurePreset": "m4-release"
+    }
   ],
   "testPresets": [
-    { "name": "host", "configurePreset": "host", "output": { "outputOnFailure": true } },
-    { "name": "m4-release", "configurePreset": "m4-release", "output": { "outputOnFailure": true } }
+    {
+      "name": "host",
+      "configurePreset": "host",
+      "output": {
+        "outputOnFailure": true
+      }
+    },
+    {
+      "name": "m4-release",
+      "configurePreset": "m4-release",
+      "output": {
+        "outputOnFailure": true
+      }
+    }
   ],
   "workflowPresets": [
     {
-      "name": "ci",
+      "name": "ci-host",
       "steps": [
-        { "type": "configure", "name": "host" },
-        { "type": "build", "name": "host" },
-        { "type": "test", "name": "host" },
-        { "type": "configure", "name": "m4-release" },
-        { "type": "build", "name": "m4-release" },
-        { "type": "test", "name": "m4-release" }
+        {
+          "type": "configure",
+          "name": "host"
+        },
+        {
+          "type": "build",
+          "name": "host"
+        },
+        {
+          "type": "test",
+          "name": "host"
+        }
+      ]
+    },
+    {
+      "name": "ci-m4",
+      "steps": [
+        {
+          "type": "configure",
+          "name": "m4-release"
+        },
+        {
+          "type": "build",
+          "name": "m4-release"
+        },
+        {
+          "type": "test",
+          "name": "m4-release"
+        }
       ]
     }
   ]
