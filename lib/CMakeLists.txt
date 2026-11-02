@@ -19,3 +19,5 @@ add_dependencies(sensor sensor_version_gen)
 target_include_directories(sensor PUBLIC include)
 target_compile_definitions(sensor PUBLIC RINGBUF_CAPACITY=16u)
 target_link_libraries(sensor PRIVATE project_warnings)
+
+add_subdirectory(filters)

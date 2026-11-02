@@ -1,5 +1,6 @@
 #include <stdbool.h>
 
+#include "filter/median.h"
 #include "platform.h"
 #include "sensor/ringbuf.h"
 #include "sensor/stats.h"
@@ -36,6 +37,12 @@ int main(void)
     CHECK(ringbuf_get(&rb, 0, &v) && v == 2);
     CHECK(ringbuf_get(&rb, RINGBUF_CAPACITY - 1, &v) && v == 100);
     CHECK(!ringbuf_get(&rb, RINGBUF_CAPACITY, &v));
+
+    ringbuf_init(&rb);
+    (void)ringbuf_push(&rb, 10);
+    (void)ringbuf_push(&rb, 500);               /* a spike */
+    (void)ringbuf_push(&rb, 12);
+    CHECK(filter_median3(&rb) == 12);
 
     plat_exit(failures == 0 ? 0 : 1);
 }
