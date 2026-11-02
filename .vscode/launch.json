@@ -5,16 +5,13 @@
             "name": "Debug on QEMU",
             "type": "cppdbg",
             "request": "launch",
-            "program": "${workspaceFolder}/build/m4-release/app/sensor_demo",
+            "program": "${workspaceFolder}/build/m4-debug/app/sensor_demo",
             "cwd": "${workspaceFolder}",
             "MIMode": "gdb",
             "miDebuggerPath": "gdb-multiarch",
             "miDebuggerServerAddress": "localhost:1234",
-            "preLaunchTask": "debug server",
-            "stopAtEntry": true,
-            "setupCommands": [
-                { "text": "-enable-pretty-printing" }
-            ]
+            "preLaunchTask": "qemu gdb server",
+            "stopAtEntry": true
         }
     ]
 }

@@ -16,10 +16,17 @@
             "problemMatcher": "$gcc"
         },
         {
-            "label": "debug server",
+            "label": "build m4-debug",
             "type": "shell",
-            "command": "qemu-system-arm -machine mps2-an386 -nographic -semihosting-config enable=on,target=native -S -gdb tcp::1234 -kernel build/m4-release/app/sensor_demo",
+            "command": "cmake --preset m4-release -B build/m4-debug -DCMAKE_BUILD_TYPE=Debug && cmake --build build/m4-debug",
+            "problemMatcher": "$gcc"
+        },
+        {
+            "label": "qemu gdb server",
+            "type": "shell",
+            "command": "qemu-system-arm -machine mps2-an386 -nographic -semihosting-config enable=on,target=native -S -gdb tcp::1234 -kernel build/m4-debug/app/sensor_demo",
             "isBackground": true,
+            "dependsOn": ["build m4-debug"],
             "problemMatcher": {
                 "pattern": { "regexp": "^$" },
                 "background": { "activeOnStart": true, "beginsPattern": "^$", "endsPattern": "^$" }
