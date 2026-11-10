@@ -15,6 +15,8 @@ enum { MSG_NOTE = 1, MSG_JOB = 2 };
 #define EVT_STOP   (1u << 1)
 #define EVT_TICK   (1u << 2)
 
+static uint32_t heap_for_itmm;
+
 static void say_status(const char *label, itmm_status_t status)
 {
     rt_say_str(label, itmm_status_text(status));
@@ -24,6 +26,9 @@ static void control_task(void *arg)
 {
     (void)arg;
     itmm_msg_t m = {.sender = T_CONTROL, .type = MSG_NOTE};
+
+    rt_say_u32("bytes of heap that itmm_init took for 2 tasks with 4 slots each", heap_for_itmm);
+    rt_say_u32("bytes in one message", sizeof(itmm_msg_t));
 
     /* 1. Three messages in a row: the worker wakes once and takes all three. */
     vTaskDelay(pdMS_TO_TICKS(10));
@@ -128,10 +133,12 @@ static void worker_task(void *arg)
 int main(void)
 {
     static const itmm_config_t cfg = {.task_count = TASKS, .queue_depth = {4, 4}};
+    size_t heap_before = xPortGetFreeHeapSize();
     if (itmm_init(&cfg) != ITMM_OK) {
         rt_say("itmm_init failed");
         rt_finish(1);
     }
+    heap_for_itmm = (uint32_t)(heap_before - xPortGetFreeHeapSize());
     (void)xTaskCreate(control_task, "control", configMINIMAL_STACK_SIZE, NULL, 3, NULL);
     (void)xTaskCreate(worker_task, "worker", configMINIMAL_STACK_SIZE, NULL, 2, NULL);
     vTaskStartScheduler();
