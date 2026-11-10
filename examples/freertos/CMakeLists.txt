@@ -35,6 +35,11 @@ add_library(rt STATIC src/rt.c)
 target_include_directories(rt PUBLIC src)
 target_link_libraries(rt PUBLIC freertos platform PRIVATE project_warnings)
 
+# ITMM, the Inter-Task Message Manager of Chapter 18: a message queue, event flags and a reply semaphore for each task.
+add_library(itmm STATIC src/itmm.c)
+target_include_directories(itmm PUBLIC src)
+target_link_libraries(itmm PUBLIC freertos PRIVATE project_warnings)
+
 # add_demo(<name> <sources>...): one program, run by CTest in QEMU with a virtual clock.
 function(add_demo name)
     add_executable(${name} ${ARGN} src/startup_rtos.c)
@@ -52,6 +57,10 @@ endfunction()
 add_demo(tasks demos/tasks.c)
 add_demo(queue_isr demos/queue_isr.c)
 add_demo(sync demos/sync.c)
+add_demo(itmm_demo demos/itmm_demo.c)
+target_link_libraries(itmm_demo PRIVATE itmm)
+add_demo(itmm_isr demos/itmm_isr.c)
+target_link_libraries(itmm_isr PRIVATE itmm)
 add_demo(stackcheck demos/stackcheck.c)
 add_demo(inversion_semaphore demos/inversion.c)
 target_compile_definitions(inversion_semaphore PRIVATE USE_MUTEX=0)
