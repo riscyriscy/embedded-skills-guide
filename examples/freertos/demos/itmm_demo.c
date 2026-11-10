@@ -133,6 +133,7 @@ static void worker_task(void *arg)
 int main(void)
 {
     static const itmm_config_t cfg = {.task_count = TASKS, .queue_depth = {4, 4}};
+    vPortFree(pvPortMalloc(1)); /* heap_4 sets up its free list at the first allocation */
     size_t heap_before = xPortGetFreeHeapSize();
     if (itmm_init(&cfg) != ITMM_OK) {
         rt_say("itmm_init failed");
