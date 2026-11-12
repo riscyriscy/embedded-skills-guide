@@ -9,7 +9,8 @@
    kernel may mask it, and it gives a semaphore to a waiting task. Interrupt 1 has priority 32, more
    urgent than the kernel's limit of 160, and calls nothing of the kernel. In three cases the driver
    task pends both interrupts and then computes for 10000 cycles, 400 microseconds. The times that
-   the output shows count from the moment of the pend. */
+   the output shows count from the moment of the pend. A last part keeps the processor for 3200
+   microseconds in each of the two states and counts the ticks. */
 
 static SemaphoreHandle_t sem;
 static volatile uint32_t t0, at_irq0, at_irq1, at_task;
@@ -44,6 +45,35 @@ static void report(const char *what)
     rt_say_u32("  the waiting task ran after, in microseconds", at_task / 25u);
 }
 
+/* The tick count while the processor spends 3.2 ms in a critical section and in a suspended
+   scheduler. SysTick has priority 224, so a critical section masks it, and its pending request
+   is a single bit. */
+static void ticks_lost(void)
+{
+    for (int mode = 1; mode <= 2; mode++) {
+        vTaskDelay(pdMS_TO_TICKS(5));
+        TickType_t before = xTaskGetTickCount();
+        if (mode == 1) {
+            taskENTER_CRITICAL();
+        } else {
+            vTaskSuspendAll();
+        }
+        for (int i = 0; i < 8; i++) {
+            rt_cyc_spin(10000);
+        }
+        TickType_t inside = xTaskGetTickCount();
+        if (mode == 1) {
+            taskEXIT_CRITICAL();
+        } else {
+            (void)xTaskResumeAll();
+        }
+        TickType_t after = xTaskGetTickCount();
+        rt_say(mode == 1 ? "3200 us inside taskENTER_CRITICAL" : "3200 us inside vTaskSuspendAll");
+        rt_say_u32("  ticks counted at the end of the section", (uint32_t)(inside - before));
+        rt_say_u32("  ticks counted after the call that ended it", (uint32_t)(after - before));
+    }
+}
+
 static void driver_task(void *arg)
 {
     (void)arg;
@@ -68,6 +98,7 @@ static void driver_task(void *arg)
                : mode == 1 ? "inside taskENTER_CRITICAL, 400 us"
                            : "inside vTaskSuspendAll, 400 us");
     }
+    ticks_lost();
     rt_finish(0);
 }
 
