@@ -64,6 +64,10 @@ static void controller_task(void *arg)
     BaseType_t second = xTaskNotify(receiver, 8u, eSetValueWithoutOverwrite);
     rt_say_u32("first xTaskNotify with eSetValueWithoutOverwrite returned", (uint32_t)first);
     rt_say_u32("second xTaskNotify with eSetValueWithoutOverwrite returned", (uint32_t)second);
+
+    vTaskDelay(pdMS_TO_TICKS(20)); /* 7. a flag that is pending when a wait clears it on entry */
+    (void)xTaskNotify(receiver, 64u, eSetBits);
+    rt_say("controller set flag value 64");
     vTaskDelay(pdMS_TO_TICKS(30));
     rt_finish(0);
 }
@@ -92,6 +96,9 @@ static void receiver_task(void *arg)
 
     vTaskDelay(pdMS_TO_TICKS(30)); /* 6 */
     wait_and_say("wait after the two sends, value", 0, 0, ALL_BITS, t20);
+
+    vTaskDelay(pdMS_TO_TICKS(20)); /* 7: the flag value 64 is pending now */
+    wait_and_say("wait, clear 64 on entry, value", 0, 64u, ALL_BITS, t20);
     vTaskDelete(NULL);
 }
 

@@ -41,17 +41,21 @@ static void monitor_task(void *arg)
     (void)arg;
 
     vTaskDelay(pdMS_TO_TICKS(200));
-    uint32_t total = 0;
-    UBaseType_t n = uxTaskGetSystemState(status, MAX_TASKS, &total);
-    rt_say_u32("tasks reported", (uint32_t)n);
-    rt_say_u32("total run time counter, microseconds", total);
+    UBaseType_t n = uxTaskGetSystemState(status, MAX_TASKS, NULL);
+    uint32_t sum = 0;
     for (UBaseType_t i = 0; i < n; i++) {
+        sum += status[i].ulRunTimeCounter;
+    }
+    rt_say_u32("tasks reported", (uint32_t)n);
+    rt_say_u32("sum of the run time counters, microseconds", sum);
+    for (UBaseType_t i = 0; i < n; i++) {
+        uint32_t us = status[i].ulRunTimeCounter;
         (void)strcpy(label, status[i].pcTaskName);
         (void)strcat(label, ", microseconds");
-        rt_say_u32(label, status[i].ulRunTimeCounter);
+        rt_say_u32(label, us);
         (void)strcpy(label, status[i].pcTaskName);
-        (void)strcat(label, ", percent of the total");
-        rt_say_u32(label, status[i].ulRunTimeCounter / (total / 100u));
+        (void)strcat(label, ", percent of the sum");
+        rt_say_u32(label, (us * 100u + sum / 2u) / sum);
     }
     rt_finish(0);
 }
