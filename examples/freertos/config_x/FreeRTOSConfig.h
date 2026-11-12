@@ -2,8 +2,9 @@
 #define FREERTOS_CONFIG_X_H
 
 /* The configuration of the programs that need run time statistics, the trace facility or static
-   allocation. It is the configuration of the other programs with five changes. A kernel with these
-   options is a different build of the kernel, so these programs link the library freertos_x. */
+   allocation. It is the configuration of the other programs with four settings changed and two
+   macros defined. A kernel with these options is a different build of the kernel, so these
+   programs link the library freertos_x. */
 
 #include "../FreeRTOSConfig.h"
 
