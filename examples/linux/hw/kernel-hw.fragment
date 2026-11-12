@@ -1,0 +1,10 @@
+# Options on top of kernel.fragment for the GPIO and I2C interfaces of user space.
+# The PL061 controller is the GPIO block of the QEMU machine virt. i2c-stub is a simulated I2C bus, and it can
+# only be built as a module, so the kernel needs module support.
+CONFIG_MODULES=y
+CONFIG_GPIOLIB=y
+CONFIG_GPIO_CDEV=y
+CONFIG_GPIO_PL061=y
+CONFIG_I2C=y
+CONFIG_I2C_CHARDEV=y
+CONFIG_I2C_STUB=m

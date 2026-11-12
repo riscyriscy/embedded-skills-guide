@@ -1,0 +1,21 @@
+#!/bin/busybox sh
+# First stage for the latency test of Chapter 20: mount the pseudo file systems, run cyclictest on an idle system
+# and then under load, and power off. The program prints each command after the prompt, as a shell session would.
+/bin/busybox --install -s /bin
+mkdir -p /proc /sys /dev /tmp
+mount -t proc proc /proc
+mount -t sysfs sysfs /sys
+mount -t devtmpfs devtmpfs /dev
+mount -t tmpfs tmpfs /tmp
+mkdir -p /dev/shm
+mount -t tmpfs tmpfs /dev/shm
+N=5000
+run() { echo "sensorfw# $*"; eval "$*"; }
+run "cyclictest -q -m -i 1000 -l $N -p 80"
+run "sh -c 'while :; do :; done' &"
+run "sh -c 'while :; do :; done' &"
+run "sh -c 'while :; do dd if=/dev/zero of=/tmp/blob bs=1M count=8 2>/dev/null; rm -f /tmp/blob; done' &"
+run "cyclictest -q -m -i 1000 -l $N"
+run "cyclictest -q -m -i 1000 -l $N -p 80"
+echo DONE
+poweroff -f

@@ -1,0 +1,3 @@
+# Two options on top of kernel.fragment: the overlay file system, and extended attributes on tmpfs for its upper layer in RAM.
+CONFIG_OVERLAY_FS=y
+CONFIG_TMPFS_XATTR=y

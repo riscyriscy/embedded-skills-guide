@@ -1,0 +1,17 @@
+#!/bin/busybox sh
+# First stage for the power cut test: mount the data disk and run the writer. Kernel command line words:
+# pcmethod=inplace|truncate|rename|durable, pcopts=mount options, pccount=number of saves (default: no end),
+# pcflush=fast makes the kernel write dirty pages back every 0.2 s instead of every 5 s.
+/bin/busybox --install -s /bin
+mkdir -p /proc /sys /dev /data
+mount -t proc proc /proc
+mount -t sysfs sysfs /sys
+mount -t devtmpfs devtmpfs /dev
+word() { for w in $(cat /proc/cmdline); do case "$w" in $1=*) echo "${w#*=}";; esac; done; }
+method=$(word pcmethod); opts=$(word pcopts); count=$(word pccount)
+case "$(cat /proc/cmdline)" in *pcflush=fast*) echo 20 > /proc/sys/vm/dirty_writeback_centisecs; echo 20 > /proc/sys/vm/dirty_expire_centisecs ;; esac
+mount -t ext4 -o "${opts:-defaults}" /dev/vda /data
+/usr/bin/writer "$method" /data ${count:-0}
+sync
+echo "bytes to the disk: $(awk '{print $7 * 512}' /sys/block/vda/stat)"
+poweroff -f

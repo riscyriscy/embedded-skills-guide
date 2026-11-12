@@ -1,0 +1,25 @@
+#!/bin/busybox sh
+# First stage of a layered root: a read-only image of the tree, a writable layer, and the overlay of both.
+# Kernel command line: layer=ram keeps the writable layer in RAM, factory=1 empties the layer before the mount.
+/bin/busybox --install -s /bin
+mkdir -p /proc /sys /dev /ro /rw /merged
+mount -t proc proc /proc
+mount -t sysfs sysfs /sys
+mount -t devtmpfs devtmpfs /dev
+cmdline=$(cat /proc/cmdline)
+
+mount -t squashfs -o ro /dev/vda /ro
+case "$cmdline" in
+*layer=ram*) mount -t tmpfs -o size=4m tmpfs /rw ;;
+*)           mount -t ext4 /dev/vdb /rw ;;
+esac
+case "$cmdline" in *factory=1*) rm -rf /rw/upper /rw/work ;; esac
+mkdir -p /rw/upper /rw/work
+mount -t overlay overlay -o lowerdir=/ro,upperdir=/rw/upper,workdir=/rw/work /merged
+
+# keep both layers visible in the new root, then hand over to the init program of the image
+mount --move /ro /merged/ro
+mount --move /rw /merged/rw
+mount --move /dev /merged/dev
+umount /proc /sys
+exec switch_root /merged /sbin/init

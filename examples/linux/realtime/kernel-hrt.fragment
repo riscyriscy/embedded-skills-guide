@@ -1,0 +1,2 @@
+# One option on top of kernel.fragment: timers with a resolution finer than the tick, which cyclictest needs.
+CONFIG_HIGH_RES_TIMERS=y

@@ -28,6 +28,9 @@ def main():
     ap.add_argument("--uboot", action="store_true", help="boot through U-Boot from disk.img instead of -kernel")
     ap.add_argument("--disk", help="root disk (default: rootfs.ext4 for -kernel, disk.img for U-Boot)")
     ap.add_argument("--disk2", help="a second virtio disk")
+    ap.add_argument("--drive2", help="a second virtio disk that the guest can write")
+    ap.add_argument("--image", help="a kernel image for -kernel (default: Image in the output directory)")
+    ap.add_argument("--no-snapshot", action="store_true", help="write to the disk files themselves, so that a later session sees the changes")
     ap.add_argument("--initrd", help="an initramfs for -kernel")
     ap.add_argument("--append", default="", help="kernel command line, added to the defaults")
     ap.add_argument("--no-defaults", action="store_true", help="do not add console=, root= and rootwait")
@@ -62,9 +65,11 @@ def main():
     else:
         disk = a.disk or os.path.join(out, "rootfs.ext4")
         append = "" if a.no_defaults else "console=ttyAMA0 root=/dev/vda rootwait ro "
-        cmd = base + ["-kernel", os.path.join(out, "Image"), "-append", append + a.append]
+        cmd = base + ["-kernel", a.image or os.path.join(out, "Image"), "-append", append + a.append]
         if a.initrd:
             cmd += ["-initrd", a.initrd]
+    if a.drive2 and not a.guest:    # QEMU numbers the virtio disks in reverse order, so this one is added first and becomes vdb
+        cmd += ["-drive", f"if=none,file={a.drive2},format=raw,id=hd1", "-device", "virtio-blk-device,drive=hd1"]
     if not a.guest and disk != "none":
         cmd += ["-drive", f"if=none,file={disk},format=raw,id=hd0", "-device", "virtio-blk-device,drive=hd0"]
     if a.disk2 and not a.guest:
@@ -72,7 +77,8 @@ def main():
     if not a.guest:
         cmd += a.qemu_extra.split()
 
-    cmd.insert(1, "-snapshot")      # writes go to a temporary file, so every session starts from the same disk
+    if not a.no_snapshot:
+        cmd.insert(1, "-snapshot")  # writes go to a temporary file, so every session starts from the same disk
     child = pexpect.spawn(cmd[0], cmd[1:], encoding="utf-8", timeout=a.timeout, codec_errors="replace")
     log = []
     marks = []

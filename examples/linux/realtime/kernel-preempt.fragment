@@ -1,0 +1,3 @@
+# Two options on top of kernel-hrt.fragment: the preemption model of the kernel changes from none to full.
+# CONFIG_PREEMPT_NONE is not set
+CONFIG_PREEMPT=y
