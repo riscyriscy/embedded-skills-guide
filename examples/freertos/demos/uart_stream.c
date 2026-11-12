@@ -19,6 +19,7 @@ static const char script[] = "AT+MODE=2\r\nREADY\r\nOK\r\n";
 static StreamBufferHandle_t rx;
 static volatile uint32_t next_byte, accepted, dropped;
 static volatile uint32_t wakes, total, largest;
+static uint32_t wake_bytes[32];
 static TaskHandle_t driver;
 
 void Irq0_Handler(void)
@@ -43,6 +44,9 @@ static void reader_task(void *arg)
         size_t n = xStreamBufferReceive(rx, buf, sizeof buf, pdMS_TO_TICKS(3));
         if (n == 0u) {
             break; /* nothing came in 3 ms */
+        }
+        if (wakes < 32u) {
+            wake_bytes[wakes] = (uint32_t)n;
         }
         wakes++;
         total += (uint32_t)n;
@@ -73,6 +77,9 @@ static void trigger_case(size_t trigger)
     rt_say_u32("  bytes that the task received", total);
     rt_say_u32("  wakes of the task", wakes);
     rt_say_u32("  most bytes in one wake", largest);
+    for (uint32_t i = 0; wakes <= 4u && i < wakes; i++) {
+        rt_say_u32("    bytes in this wake", wake_bytes[i]);
+    }
     vStreamBufferDelete(rx);
 }
 
