@@ -133,7 +133,7 @@ void rt_assert_failed(const char *file, int line)
     plat_exit(2);
 }
 
-void vApplicationMallocFailedHook(void)
+__attribute__((weak)) void vApplicationMallocFailedHook(void)
 {
     rt_say("heap exhausted");
     plat_exit(3);

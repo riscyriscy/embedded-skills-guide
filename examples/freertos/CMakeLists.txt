@@ -40,10 +40,25 @@ add_library(itmm STATIC src/itmm.c)
 target_include_directories(itmm PUBLIC src)
 target_link_libraries(itmm PUBLIC freertos PRIVATE project_warnings)
 
-# add_demo(<name> <sources>...): one program, run by CTest in QEMU with a virtual clock.
-function(add_demo name)
+# The kernel again, built with the configuration of config_x: static allocation, the trace facility,
+# run time statistics and two notification indexes. The programs that need those options link
+# freertos_x and rt_x instead of freertos and rt.
+add_library(freertos_x STATIC
+    "${KERNEL}/tasks.c" "${KERNEL}/queue.c" "${KERNEL}/list.c" "${KERNEL}/timers.c"
+    "${KERNEL}/event_groups.c" "${KERNEL}/stream_buffer.c"
+    "${KERNEL}/portable/GCC/ARM_CM3/port.c" "${KERNEL}/portable/MemMang/heap_4.c")
+target_include_directories(freertos_x PUBLIC
+    "${CMAKE_CURRENT_SOURCE_DIR}/config_x" "${KERNEL}/include" "${KERNEL}/portable/GCC/ARM_CM3")
+target_compile_options(freertos_x PRIVATE -w)
+
+add_library(rt_x STATIC src/rt.c)
+target_include_directories(rt_x PUBLIC src)
+target_link_libraries(rt_x PUBLIC freertos_x platform PRIVATE project_warnings)
+
+# add_demo_with(<rt library> <name> <sources>...): one program, run by CTest in QEMU with a virtual clock.
+function(add_demo_with rtlib name)
     add_executable(${name} ${ARGN} src/startup_rtos.c)
-    target_link_libraries(${name} PRIVATE rt firmware_link project_warnings)
+    target_link_libraries(${name} PRIVATE ${rtlib} firmware_link project_warnings)
     target_compile_options(${name} PRIVATE -fno-tree-loop-distribute-patterns)
     # The start-up code of these programs has more vectors than the one of the platform layer, so the
     # post build steps of firmware_finish() are written out here.
@@ -54,6 +69,15 @@ function(add_demo name)
     set_tests_properties(${name} PROPERTIES TIMEOUT 60)
 endfunction()
 
+function(add_demo name)
+    add_demo_with(rt ${name} ${ARGN})
+endfunction()
+
+function(add_demo_x name)
+    # The memory of the idle task and the timer task is part of each program, so that the linker keeps it.
+    add_demo_with(rt_x ${name} ${ARGN} src/static_mem.c)
+endfunction()
+
 add_demo(tasks demos/tasks.c)
 add_demo(queue_isr demos/queue_isr.c)
 add_demo(sync demos/sync.c)
@@ -61,6 +85,13 @@ add_demo(itmm_demo demos/itmm_demo.c)
 target_link_libraries(itmm_demo PRIVATE itmm)
 add_demo(itmm_isr demos/itmm_isr.c)
 target_link_libraries(itmm_isr PRIVATE itmm)
+add_demo(crit_sections demos/crit_sections.c)
+add_demo(defer_isr demos/defer_isr.c)
+add_demo_x(notify_flags demos/notify_flags.c)
+add_demo(queue_patterns demos/queue_patterns.c)
+add_demo(heap_stats demos/heap_stats.c)
+add_demo(period_miss demos/period_miss.c)
+add_demo_x(cpu_load demos/cpu_load.c)
 add_demo(stackcheck demos/stackcheck.c)
 add_demo(inversion_semaphore demos/inversion.c)
 target_compile_definitions(inversion_semaphore PRIVATE USE_MUTEX=0)
