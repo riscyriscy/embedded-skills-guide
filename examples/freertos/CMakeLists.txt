@@ -35,7 +35,7 @@ add_library(rt STATIC src/rt.c)
 target_include_directories(rt PUBLIC src)
 target_link_libraries(rt PUBLIC freertos platform PRIVATE project_warnings)
 
-# ITMM, the Inter-Task Message Manager of Chapter 18: a message queue, event flags and a reply semaphore for each task.
+# ITMM, the Inter-Task Message Manager of the Handbook: a message queue, event flags and a reply semaphore for each task.
 add_library(itmm STATIC src/itmm.c)
 target_include_directories(itmm PUBLIC src)
 target_link_libraries(itmm PUBLIC freertos PRIVATE project_warnings)

@@ -38,6 +38,12 @@ Chapter 1, and in `docker/`.
 
 The history has roughly one commit for each part of the book, from the Part 1 tooling to the Linux hardware examples, so `git log` shows the project as it stood after each part. The tag `v0.1.0` marks the first commit.
 
+## FreeRTOS and Zephyr examples
+
+The programs under `examples/freertos/` are a larger set than Chapter 18 explains. Chapter 18 is a working tour of the kernel. The full set is explained in The Embedded FreeRTOS Handbook (https://github.com/riscyriscy/freertos-handbook): the message manager ITMM, critical sections, the deferral of interrupt work, notifications, queues, measurement, timers, stream buffers, static allocation and the crash record. The build and the tests of this repository still cover every program.
+
+`examples/zephyr/app-manifest/west.yml` is the manifest of an application repository that imports Zephyr 4.5.0 with three modules. Chapter 19 shows how to use it: copy the directory into a git repository of its own and run `west init -l` on it.
+
 ## Third-party code
 
 `examples/freertos/FreeRTOS-Kernel/` holds the files of FreeRTOS-Kernel V11.3.3 that the examples build, under the
