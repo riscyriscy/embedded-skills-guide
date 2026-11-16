@@ -33,7 +33,9 @@ warnings() {
 }
 
 format() {
-    git ls-files '*.c' '*.h' '*.cpp' '*.hpp' | xargs clang-format --dry-run --Werror
+    # The sources of the project, as in warnings and tidy; the examples are laid out for the book.
+    git ls-files 'lib/*.c' 'lib/*.h' 'app/*.c' 'platform/*.c' 'platform/*.h' 'test/*.c' |
+        xargs clang-format --dry-run --Werror
 }
 
 tidy() {
