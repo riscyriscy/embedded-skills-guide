@@ -11,7 +11,7 @@ program, a unit test and the scripts of the book complete it.
 ## Quick start
 
 ```
-git clone https://github.com/<your-github-user>/embedded-skills-guide
+git clone https://github.com/riscyriscy/embedded-skills-guide
 cd embedded-skills-guide
 tools/check_env.sh        # lists the tools that are missing
 tools/ci.sh all           # host build, tests, target build under QEMU, static checks
