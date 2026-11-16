@@ -40,7 +40,7 @@ The history has roughly one commit for each part of the book, from the Part 1 to
 
 ## FreeRTOS and Zephyr examples
 
-The programs under `examples/freertos/` are a larger set than Chapter 18 explains. Chapter 18 is a working tour of the kernel. The full set is explained in The Embedded FreeRTOS Handbook (https://github.com/riscyriscy/freertos-handbook): the message manager ITMM, critical sections, the deferral of interrupt work, notifications, queues, measurement, timers, stream buffers, static allocation and the crash record. The build and the tests of this repository still cover every program.
+The programs under `examples/freertos/` are a larger set than Chapter 18 explains. Chapter 18 is a working tour of the kernel. The full set is explained in The Embedded FreeRTOS Handbook (https://github.com/riscyriscy/freertos-handbook): critical sections, the deferral of interrupt work, notifications, queues, measurement, timers, stream buffers, static allocation and the crash record. The build and the tests of this repository still cover every program.
 
 `examples/zephyr/app-manifest/west.yml` is the manifest of an application repository that imports Zephyr 4.5.0 with three modules. Chapter 19 shows how to use it: copy the directory into a git repository of its own and run `west init -l` on it.
 

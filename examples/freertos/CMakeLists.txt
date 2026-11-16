@@ -35,11 +35,6 @@ add_library(rt STATIC src/rt.c)
 target_include_directories(rt PUBLIC src)
 target_link_libraries(rt PUBLIC freertos platform PRIVATE project_warnings)
 
-# ITMM, the Inter-Task Message Manager of the Handbook: a message queue, event flags and a reply semaphore for each task.
-add_library(itmm STATIC src/itmm.c)
-target_include_directories(itmm PUBLIC src)
-target_link_libraries(itmm PUBLIC freertos PRIVATE project_warnings)
-
 # The kernel again, built with the configuration of config_x: static allocation, the trace facility,
 # run time statistics and two notification indexes. The programs that need those options link
 # freertos_x and rt_x instead of freertos and rt.
@@ -81,13 +76,8 @@ endfunction()
 add_demo(tasks demos/tasks.c)
 add_demo(queue_isr demos/queue_isr.c)
 add_demo(sync demos/sync.c)
-add_demo(itmm_demo demos/itmm_demo.c)
-target_link_libraries(itmm_demo PRIVATE itmm)
-add_demo(itmm_isr demos/itmm_isr.c)
-target_link_libraries(itmm_isr PRIVATE itmm)
 add_demo(crit_sections demos/crit_sections.c)
 add_demo(defer_isr demos/defer_isr.c)
-target_link_libraries(defer_isr PRIVATE itmm)
 add_demo_x(notify_flags demos/notify_flags.c)
 add_demo(queue_patterns demos/queue_patterns.c)
 add_demo(heap_stats demos/heap_stats.c)
