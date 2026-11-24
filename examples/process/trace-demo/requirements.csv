@@ -1,0 +1,7 @@
+id,text
+REQ-001,The buffer keeps the newest samples when it is full.
+REQ-002,ringbuf_push reports when it overwrites a sample.
+REQ-003,A sample outside 0 to 4095 is rejected.
+REQ-004,The mean of an empty buffer is 0.
+REQ-005,The mean is rounded toward zero.
+REQ-006,The device resets within 100 ms after a task stops reporting.

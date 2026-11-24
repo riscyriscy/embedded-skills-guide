@@ -1,4 +1,5 @@
-/* Start-up code for the watchdog examples: the project start-up with a SysTick and a HardFault vector. */
+/* Start-up code for the watchdog examples: the project start-up with a SysTick and a
+   HardFault vector. */
 #include <stdint.h>
 
 extern uint32_t _estack, _sidata, _sdata, _edata, _sbss, _ebss;

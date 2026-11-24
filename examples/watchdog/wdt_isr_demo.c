@@ -1,4 +1,5 @@
-/* The mistake: the watchdog is fed from a timer interrupt, so it is fed while the main loop does nothing. */
+/* The mistake: the watchdog is fed from a timer interrupt, so it is fed while the
+   main loop does nothing. */
 #include <stdint.h>
 
 #include "platform.h"
@@ -23,6 +24,7 @@ int main(void)
     while (ticks < 50u) {
         /* The main loop makes no progress at all. */
     }
-    plat_puts("50 ticks of 10 ms with a stuck main loop, and the watchdog never reset the device");
+    plat_puts("50 ticks of 10 ms with a stuck main loop, and the watchdog never reset "
+              "the device");
     plat_exit(0);
 }

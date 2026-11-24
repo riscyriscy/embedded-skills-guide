@@ -1,0 +1,5 @@
+# Labels of the self-hosted runners of the project. actionlint knows the labels of the
+# runners that GitHub provides and rejects any other label unless it is listed here.
+self-hosted-runner:
+  labels:
+    - board-m4

@@ -1,6 +1,6 @@
 # examples/board
 
-Programs for Chapter 15 of Volume 1, section "From the simulator to a board". Nothing here needs a board.
+Programs for Chapter 16 of Volume 1, section "From the simulator to a board". Nothing here needs a board.
 
 | File | Purpose |
 |---|---|

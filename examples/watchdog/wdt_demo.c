@@ -1,4 +1,5 @@
-/* Four resets in one run: a stuck task, a hard fault, a software request and the end of the demo. */
+/* Four resets in one run: a stuck task, a hard fault, a software request and the end
+   of the demo. */
 #include <stdint.h>
 
 #include "platform.h"
@@ -35,7 +36,8 @@ int main(void)
 
     switch (why) {
     case RR_POWER_ON:
-        /* Two tasks report progress. Task B stops after 5 rounds, as if it were stuck in a wait. */
+        /* Two tasks report progress. Task B stops after 5 rounds, as if it were
+           stuck in a wait. */
         wdt_start(LOAD);
         for (unsigned round = 0;; round++) {
             wdt_progress(TASK_A);

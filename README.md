@@ -1,6 +1,6 @@
 # sensorfw: companion code for the Embedded Skills Guide
 
-Source code of the running project of "Embedded Skills Guide" (C. Paul Gordon, Embedded Think, November 2026), published as two volumes: Volume 1, Tools, Build and Test (Chapters 1 to 15), and Volume 2, RTOS, Linux and Release (Chapters 1 to 11). Each volume numbers its chapters from 1, so a chapter in the listings and comments of this repository always names its volume, as in Chapter 2 of Volume 2.
+Source code of the running project of "Embedded Skills Guide" (C. Paul Gordon, Embedded Think, November 2026), published as two volumes: Volume 1, Tools, Build and Test (Chapters 1 to 19), and Volume 2, RTOS, Linux and Release (Chapters 1 to 16). Each volume numbers its chapters from 1, so a chapter in the listings and comments of this repository always names its volume, as in Chapter 2 of Volume 2.
 Every chapter of the book builds, tests, formats, debugs or ships this project, and every listing in the book
 comes from this repository.
 
@@ -31,9 +31,9 @@ Chapter 1 of Volume 1, and in `docker/`.
 | `app/`, `test/` | `sensor_demo` and the unit test `test_sensor` |
 | `cmake/`, `CMakeLists.txt`, `CMakePresets.json`, `Makefile` | The CMake build with a toolchain file and presets, and the same build written by hand |
 | `docker/` | The build image with pinned tools and the image of the pipeline |
-| `tools/`, `tools/sfw/` | Scripts for checks, size reports, debugging, the release and the documentation build, and a Python dashboard of pipeline reports |
-| `docs/`, `mkdocs.yml` | The documentation site and the Doxygen settings |
-| `examples/` | Programs for the language, testing, concurrency, Linux, debugging, update and documentation chapters; the project build does not use them. `examples/run.sh` builds and runs one of them for the host or the Cortex-M4 |
+| `tools/`, `tools/sfw/` | Scripts for checks, size reports, changelogs, requirement tracing, secret scans, battery estimates, debugging, the release and the documentation build, and a Python dashboard of pipeline reports |
+| `docs/`, `mkdocs.yml` | The documentation site, the Doxygen settings and the review checklist |
+| `examples/` | Programs for the language, testing, practice, size, process, concurrency, tracing, security, Linux, debugging, update and documentation chapters; the project build does not use them. `examples/run.sh` builds and runs one of them for the host or the Cortex-M4 |
 | `.clang-format`, `.clang-tidy`, `.clangd`, `.editorconfig`, `.vscode/`, `.githooks/` | Editor, formatter, analyzer and hook settings |
 
 The history has roughly one commit for each part of the two volumes, from the tooling of Volume 1 to the Linux hardware examples, so `git log` shows the project as it stood after each part. The commit titles number the parts through both volumes: Parts 1 to 4 are the parts of Volume 1, and Parts 5 to 8 are the four parts of Volume 2. The tag `v0.1.0` marks the first commit.
@@ -46,7 +46,7 @@ The programs under `examples/freertos/` are a larger set than Chapter 2 of Volum
 
 ## C++ unit tests
 
-`examples/testing/cpp/` is a second CMake project with GoogleTest tests for the C++ ring buffer template in `examples/modern-cpp/ringbuf.hpp`. Chapter 12 of Volume 1 explains it. It needs the `libgtest-dev` package (1.14.0 was used) and runs on the host only:
+`examples/testing/cpp/` is a second CMake project with GoogleTest tests for the C++ ring buffer template in `examples/modern-cpp/ringbuf.hpp`. Chapter 13 of Volume 1 explains it. It needs the `libgtest-dev` package (1.14.0 was used) and runs on the host only:
 
 ```
 cmake -S examples/testing/cpp -B build/testing-cpp -G Ninja

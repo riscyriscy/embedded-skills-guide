@@ -1,6 +1,6 @@
 # examples/watchdog
 
-Programs that an earlier edition of the book described and that no chapter uses now. They run under QEMU (machine mps2-an386) with the start-up code and the linker script in this folder.
+Programs for Chapter 13 of Volume 2 of the Embedded Skills Guide, watchdogs and reset reasons. They run under QEMU (machine mps2-an386) with the start-up code and the linker script in this folder.
 
 | File | Purpose |
 |---|---|
@@ -10,6 +10,7 @@ Programs that an earlier edition of the book described and that no chapter uses 
 | `startup_wdt.c` | the project start-up code plus HardFault and SysTick vectors |
 | `wdt_demo.c` | four resets in one run: a stuck task, a hard fault, a software request, the end |
 | `wdt_isr_demo.c` | the mistake of feeding the watchdog from a timer interrupt |
+| `wdt_safe_demo.c` | a reset loop guard: after three unplanned resets in a row the program enters a safe mode |
 
 Run:
 

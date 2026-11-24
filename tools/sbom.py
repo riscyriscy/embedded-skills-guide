@@ -6,7 +6,7 @@ Usage: tools/sbom.py <binary> <map file> <version> <output>
 Every archive that the map names must have a row in tools/sbom-parts.tsv. Without one the script
 stops and names the archive, because a release must not carry a list of parts with an entry that
 nobody has identified. The time and the serial number come from the commit, so every build of that
-commit writes the same file, as Chapter 11 of Volume 1 asks.
+commit writes the same file, as Chapter 12 of Volume 1 asks.
 """
 
 import hashlib

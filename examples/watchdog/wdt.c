@@ -3,7 +3,7 @@
 #define WDOG(offset) (*(volatile uint32_t *)(0x40008000u + (offset)))
 #define WDOGLOAD    0x000u
 #define WDOGCONTROL 0x008u
-#define WDOGINTCLR  0x00Cu /* a write reloads the counter and clears the interrupt */
+#define WDOGINTCLR  0x00Cu /* a write reloads the counter, clears the interrupt */
 #define WDOGLOCK    0xC00u
 #define CONTROL_INTEN 1u
 #define CONTROL_RESEN 2u

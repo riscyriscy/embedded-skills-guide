@@ -12,7 +12,7 @@ set(CMAKE_FIND_ROOT_PATH_MODE_PACKAGE ONLY)
 
 set(CPU_FLAGS "-mcpu=cortex-m4 -mthumb -mfloat-abi=soft")
 # -ffile-prefix-map replaces the source and build directories in debug info and __FILE__ with ".",
-# so the same source gives the same bytes in any directory (Chapter 11 of Volume 1).
+# so the same source gives the same bytes in any directory (Chapter 12 of Volume 1).
 set(PREFIX_MAP "-ffile-prefix-map=${CMAKE_SOURCE_DIR}=. -ffile-prefix-map=${CMAKE_BINARY_DIR}=.")
 set(CMAKE_C_FLAGS_INIT "${CPU_FLAGS} -ffunction-sections -fdata-sections ${PREFIX_MAP}")
 # Per-configuration flags are set in the cache. CMAKE_C_FLAGS_RELEASE_INIT would be
