@@ -1,6 +1,6 @@
 # examples/debug
 
-Programs and gdb command files for Chapter 27.
+Programs and gdb command files for Chapter 9 of Volume 2.
 
 | File | Purpose |
 |---|---|

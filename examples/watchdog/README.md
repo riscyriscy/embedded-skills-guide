@@ -1,6 +1,6 @@
 # examples/watchdog
 
-Programs for Chapter 28. They run under QEMU (machine mps2-an386) with the start-up code and the linker script in this folder.
+Programs that an earlier edition of the book described and that no chapter uses now. They run under QEMU (machine mps2-an386) with the start-up code and the linker script in this folder.
 
 | File | Purpose |
 |---|---|

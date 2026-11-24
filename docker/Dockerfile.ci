@@ -1,4 +1,4 @@
-# The image of the pipeline: the build image of Chapter 11 and the tools for tests, coverage and static checks.
+# The image of the pipeline: the build image (Chapter 11 of Volume 1) and the tools for tests, coverage and checks.
 FROM sensorfw-build:1
 
 # The host compiler needs the C library headers and start files, which gcc only recommends.
@@ -15,10 +15,10 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     && ln -s ../lib/llvm-18/bin/clang-tidy /usr/bin/clang-tidy \
     && rm -rf /var/lib/apt/lists/*
 
-# gcovr comes from PyPI at the version of Chapter 13, in a virtual environment of its own.
+# gcovr comes from PyPI at the version of Chapter 13 of Volume 1, in a virtual environment of its own.
 RUN python3 -m venv /opt/gcovr && /opt/gcovr/bin/pip install --no-cache-dir gcovr==8.8 \
     && ln -s /opt/gcovr/bin/gcovr /usr/local/bin/gcovr
 
-# uv at the version of Chapter 25 sends the reports to the dashboard, in a virtual environment of its own.
+# uv at the version of Chapter 10 of Volume 2 sends the reports to the dashboard, in its own virtual environment.
 RUN python3 -m venv /opt/uv && /opt/uv/bin/pip install --no-cache-dir uv==0.11.32 \
     && ln -s /opt/uv/bin/uv /usr/local/bin/uv

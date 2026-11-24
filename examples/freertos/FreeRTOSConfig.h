@@ -1,7 +1,7 @@
 #ifndef FREERTOS_CONFIG_H
 #define FREERTOS_CONFIG_H
 
-/* The kernel configuration of the examples of Chapters 17 and 18. The target is the Cortex-M4 of
+/* The kernel configuration of the examples of Chapters 2 and 3 of Volume 2. The target is the Cortex-M4 of
    the QEMU machine mps2-an386, which runs the system clock at 25 MHz and has three priority bits.
  */
 

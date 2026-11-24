@@ -1,0 +1,10 @@
+# The parts that may reach an image, one row for each archive that the linker can pull in.
+# archive	component	version	supplier	licence
+libsensor.a	sensorfw-lib	project	sensorfw	MIT
+libplatform.a	sensorfw-platform	project	sensorfw	MIT
+libfilters.a	sensorfw-filters	project	sensorfw	MIT
+librt.a	sensorfw-rt	project	sensorfw	MIT
+libfreertos.a	FreeRTOS-Kernel	V11.3.3	Amazon Web Services	MIT
+libc_nano.a	newlib-nano	4.4.0	Arm GNU Toolchain	newlib (BSD style, see COPYING.NEWLIB)
+libfreertos_x.a	FreeRTOS-Kernel	V11.3.3	Amazon Web Services	MIT
+librt_x.a	sensorfw-rt	project	sensorfw	MIT

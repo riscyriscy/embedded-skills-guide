@@ -72,6 +72,9 @@ make_release() {
         "$version" "$tag" "$(git rev-parse HEAD)" "$(git log -1 --format=%cI)" \
         "$(arm-none-eabi-gcc --version | head -n 1)" "$size" > "$out/manifest.json"
 
+    # The bill of materials: the parts inside the image, from the archives that the linker kept.
+    tools/sbom.py "$out/$name.bin" "$elf.map" "$version" "$out/sbom.json"
+
     # The list of hashes is signed. A download is checked against the list, the list against the signature.
     (cd "$out" && sha256sum -- * > SHA256SUMS)
     openssl dgst -sha256 -sign "$SIGN_KEY" -out "$out/SHA256SUMS.sig" "$out/SHA256SUMS"

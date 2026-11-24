@@ -5,7 +5,7 @@
 #include "busy.h"
 #include "trace.h"
 
-/* The inversion of Chapter 17 in Zephyr. A low priority thread holds a lock, a high priority thread
+/* The inversion of Chapter 2 of Volume 2 in Zephyr. A low priority thread holds a lock, a high priority thread
    wants it, and a thread of medium priority keeps the processor busy. A smaller number is a higher
    priority in Zephyr. */
 

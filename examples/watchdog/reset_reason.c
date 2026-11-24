@@ -70,7 +70,7 @@ void rr_request_reset(void)
     reset_now();
 }
 
-/* A hard fault records its reason and resets. A product would save the registers first (Chapter 27). */
+/* A hard fault records its reason and resets. A product would save the registers first (Chapter 9 of Volume 2). */
 void HardFault_Handler(void)
 {
     store(STATE_FAULT);

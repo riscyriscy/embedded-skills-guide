@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.25)
 project(concurrency_examples VERSION 0.1.0 LANGUAGES C)
 
-# The POSIX thread examples of Chapter 16. They build the ring buffer of the running project from its
+# The POSIX thread examples of Chapter 1 of Volume 2. They build the ring buffer of the running project from its
 # source file and run on the build machine.
 get_filename_component(REPO "${CMAKE_CURRENT_SOURCE_DIR}/../.." ABSOLUTE)
 set(SANITIZE "" CACHE STRING "Sanitizers, for example thread")

@@ -1,6 +1,6 @@
 #!/bin/bash
 # Checks a release directory the way a receiver does: the hashes, the signature of the list of hashes,
-# the signature of the image and the version in the manifest, the file name and the binary.
+# the signature of the image, the version in the manifest and in the binary, and the bill of materials.
 # Usage: tools/verify_release.sh <release directory> <public key>
 # Exit status 0 when every check passes. Every check runs, so one run shows every problem.
 set -u
@@ -26,4 +26,12 @@ check "manifest.json carries the version ${tag#v}" grep -q "\"version\": \"${tag
 # shellcheck disable=SC2317
 has_string() { tr '\0' '\n' < "$1" | grep -qx "$2"; }
 check "the binary carries the string ${tag#v} ($tag)" has_string "$name.bin" "${tag#v} ($tag)"
+# shellcheck disable=SC2317
+describes_image() {
+    python3 -c 'import hashlib, json, sys
+part = json.load(open(sys.argv[1]))["metadata"]["component"]
+want = hashlib.sha256(open(sys.argv[3], "rb").read()).hexdigest()
+sys.exit(0 if part["version"] == sys.argv[2] and any(h["content"] == want for h in part["hashes"]) else 1)' "$@"
+}
+check "sbom.json names the version ${tag#v} and the hash of the binary" describes_image sbom.json "${tag#v}" "$name.bin"
 exit $failed

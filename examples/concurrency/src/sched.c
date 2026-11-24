@@ -5,7 +5,7 @@
 #include <string.h>
 
 /* The real time part of POSIX threads: a mutex that passes priority to its holder (the protocol of
-   Chapter 17) and a thread with the fixed priority policy SCHED_FIFO. */
+   Chapter 2 of Volume 2) and a thread with the fixed priority policy SCHED_FIFO. */
 
 static void *nothing(void *arg)
 {

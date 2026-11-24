@@ -7,7 +7,7 @@
 #include "busy.h"
 #include "trace.h"
 
-/* The pipeline of Chapter 18 in Zephyr: a device interrupt hands samples to a thread through a
+/* The pipeline of Chapter 2 of Volume 2 in Zephyr: a device interrupt hands samples to a thread through a
    message queue. The sensor thread stands for the device and pends interrupt 31 every 5 ms. The
    consumer needs 12 ms for each sample, so the queue of 3 slots fills. */
 

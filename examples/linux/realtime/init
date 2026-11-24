@@ -1,6 +1,7 @@
 #!/bin/busybox sh
-# First stage for the latency test of Chapter 20: mount the pseudo file systems, run cyclictest on an idle system
-# and then under load, and power off. The program prints each command after the prompt, as a shell session would.
+# First stage for the latency test of Chapter 5 of Volume 2: mount the pseudo file systems, run cyclictest on an
+# idle system and then under load, and power off. The program prints each command after the prompt, as a shell
+# session would.
 /bin/busybox --install -s /bin
 mkdir -p /proc /sys /dev /tmp
 mount -t proc proc /proc

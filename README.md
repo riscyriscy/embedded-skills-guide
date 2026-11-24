@@ -1,6 +1,6 @@
 # sensorfw: companion code for the Embedded Skills Guide
 
-Source code of the running project of "Embedded Skills Guide" (C. Paul Gordon, Embedded Think, November 2026).
+Source code of the running project of "Embedded Skills Guide" (C. Paul Gordon, Embedded Think, November 2026), published as two volumes: Volume 1, Tools, Build and Test (Chapters 1 to 15), and Volume 2, RTOS, Linux and Release (Chapters 1 to 11). Each volume numbers its chapters from 1, so a chapter in the listings and comments of this repository always names its volume, as in Chapter 2 of Volume 2.
 Every chapter of the book builds, tests, formats, debugs or ships this project, and every listing in the book
 comes from this repository.
 
@@ -20,7 +20,7 @@ tools/ci.sh all           # host build, tests, target build under QEMU, static c
 `tools/ci.sh` is the one script that GitHub Actions (`.github/`), GitLab CI (`.gitlab-ci.yml`) and Jenkins
 (`Jenkinsfile`) call, so a stage that fails on the server fails the same way on your machine. A single stage
 runs alone, for example `tools/ci.sh m4`. The tools that each stage needs and their versions are in the book,
-Chapter 1, and in `docker/`.
+Chapter 1 of Volume 1, and in `docker/`.
 
 ## Layout
 
@@ -36,13 +36,23 @@ Chapter 1, and in `docker/`.
 | `examples/` | Programs for the language, testing, concurrency, Linux, debugging, update and documentation chapters; the project build does not use them. `examples/run.sh` builds and runs one of them for the host or the Cortex-M4 |
 | `.clang-format`, `.clang-tidy`, `.clangd`, `.editorconfig`, `.vscode/`, `.githooks/` | Editor, formatter, analyzer and hook settings |
 
-The history has roughly one commit for each part of the book, from the Part 1 tooling to the Linux hardware examples, so `git log` shows the project as it stood after each part. The tag `v0.1.0` marks the first commit.
+The history has roughly one commit for each part of the two volumes, from the tooling of Volume 1 to the Linux hardware examples, so `git log` shows the project as it stood after each part. The commit titles number the parts through both volumes: Parts 1 to 4 are the parts of Volume 1, and Parts 5 to 8 are the four parts of Volume 2. The tag `v0.1.0` marks the first commit.
 
 ## FreeRTOS and Zephyr examples
 
-The programs under `examples/freertos/` are a larger set than Chapter 18 explains. Chapter 18 is a working tour of the kernel. The full set is explained in The Embedded FreeRTOS Handbook (https://github.com/riscyriscy/freertos-handbook): critical sections, the deferral of interrupt work, notifications, queues, measurement, timers, stream buffers, static allocation and the crash record. The build and the tests of this repository still cover every program.
+The programs under `examples/freertos/` are a larger set than Chapter 2 of Volume 2 explains. That chapter is a working tour of the kernel. The full set is explained in The Embedded FreeRTOS Handbook (https://github.com/riscyriscy/freertos-handbook): critical sections, the deferral of interrupt work, notifications, queues, measurement, timers, stream buffers, static allocation and the crash record. The build and the tests of this repository still cover every program.
 
-`examples/zephyr/app-manifest/west.yml` is the manifest of an application repository that imports Zephyr 4.5.0 with three modules. Chapter 19 shows how to use it: copy the directory into a git repository of its own and run `west init -l` on it.
+`examples/zephyr/app-manifest/west.yml` is the manifest of an application repository that imports Zephyr 4.5.0 with three modules. Chapter 3 of Volume 2 shows how to use it: copy the directory into a git repository of its own and run `west init -l` on it.
+
+## C++ unit tests
+
+`examples/testing/cpp/` is a second CMake project with GoogleTest tests for the C++ ring buffer template in `examples/modern-cpp/ringbuf.hpp`. Chapter 12 of Volume 1 explains it. It needs the `libgtest-dev` package (1.14.0 was used) and runs on the host only:
+
+```
+cmake -S examples/testing/cpp -B build/testing-cpp -G Ninja
+cmake --build build/testing-cpp
+ctest --test-dir build/testing-cpp
+```
 
 ## Third-party code
 

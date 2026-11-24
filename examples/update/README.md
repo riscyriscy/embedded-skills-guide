@@ -1,6 +1,6 @@
 # examples/update
 
-Programs for Chapter 28.
+Programs for Chapter 10 of Volume 2.
 
 | File | Purpose |
 |---|---|

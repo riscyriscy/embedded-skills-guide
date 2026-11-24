@@ -1,7 +1,8 @@
 #!/bin/bash
-# Adds the programs of Chapters 20 and 21 to the root file system of image.sh: cyclictest, the tools of libgpiod
-# and two small programs that use GPIO and I2C from user space. The sources of rt-tests, numactl and libgpiod
-# are not part of the project, and each is built static for arm64 with the cross compiler of build.sh.
+# Adds the programs of Chapters 5 and 6 of Volume 2 to the root file system of image.sh: cyclictest, the tools
+# of libgpiod and two small programs that use GPIO and I2C from user space. The sources of rt-tests, numactl
+# and libgpiod are not part of the project, and each is built static for arm64 with the cross compiler of
+# build.sh.
 # Usage: RT_TESTS_SRC=... NUMA_SRC=... GPIOD_SRC=... examples/linux/extra.sh [output directory of build.sh]
 set -eu
 here=$(cd "$(dirname "$0")" && pwd)

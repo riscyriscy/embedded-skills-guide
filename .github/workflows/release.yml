@@ -41,6 +41,7 @@ jobs:
             build/release/${{ github.ref_name }}/*.bin
             build/release/${{ github.ref_name }}/SHA256SUMS*
             build/release/${{ github.ref_name }}/manifest.json
+            build/release/${{ github.ref_name }}/sbom.json
       - uses: actions/upload-artifact@v7
         with:
           name: symbols-${{ github.ref_name }}

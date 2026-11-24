@@ -17,7 +17,7 @@
 #define SENSORD_VERSION "unknown"
 #endif
 
-/* A service for the Linux image of Chapters 21 to 23. Once a second it takes a sample, pushes it
+/* A service for the Linux image of Chapters 6 to 8 of Volume 2. Once a second it takes a sample, pushes it
    into the ring buffer of the sensor library, and every fifth sample it logs the mean. It runs the
    way a service should run: in the foreground, with a log on standard output, with a clean stop on
    SIGTERM, with a re-read of its settings on SIGHUP, and with the two messages of systemd (READY

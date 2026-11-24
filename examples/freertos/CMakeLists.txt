@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.25)
 project(rtos_examples VERSION 0.1.0 LANGUAGES C)
 
-# The examples of Chapters 17, 18 and 20 build for the Cortex-M4 of QEMU, with the toolchain file of
+# The examples of Chapters 2, 3 and 5 of Volume 2 build for the Cortex-M4 of QEMU, with the toolchain file of
 # the running project. They run with: ctest --preset m4  or  cmake --build --preset m4 --target run_<name>
 get_filename_component(REPO "${CMAKE_CURRENT_SOURCE_DIR}/../.." ABSOLUTE)
 list(APPEND CMAKE_MODULE_PATH "${REPO}/cmake")
