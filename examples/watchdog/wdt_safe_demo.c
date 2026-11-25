@@ -7,7 +7,7 @@
 #include "reset_reason.h"
 #include "wdt.h"
 
-#define LOAD 0x00100000u /* 41.9 ms */
+#define LOAD 0x00100000u /* 41.9 ms a period */
 #define MAX_RESETS 3u
 
 static void run_application(void)

@@ -6,7 +6,7 @@
 #include "reset_reason.h"
 #include "wdt.h"
 
-#define LOAD 0x00100000u /* 1048576 counts of 25 MHz: 41.9 ms */
+#define LOAD 0x00100000u /* 1048576 counts of 25 MHz: 41.9 ms a period */
 #define TASK_A 0u
 #define TASK_B 1u
 

@@ -100,7 +100,7 @@ static void worker(void *arg)
         crash_request_reset(0x42u); /* a planned reset, for example after an update */
         break;
     case 5:
-        wdt_start(0x00100000u); /* 41.9 ms, and nothing feeds it */
+        wdt_start(0x00100000u); /* 41.9 ms a period, and nothing feeds it */
         vTaskDelay(portMAX_DELAY);
         break;
     default:

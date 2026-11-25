@@ -18,7 +18,7 @@ void SysTick_Handler(void)
 
 int main(void)
 {
-    wdt_start(0x00100000u);      /* 41.9 ms */
+    wdt_start(0x00100000u);      /* 41.9 ms a period */
     SYST_RVR = 250000u - 1u;     /* 10 ms at 25 MHz */
     SYST_CSR = 7u;               /* clock, interrupt and enable */
     while (ticks < 50u) {
